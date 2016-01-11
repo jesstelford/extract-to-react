@@ -1,0 +1,31 @@
+{
+  "name": "html-to-react",
+  "version": "0.0.0",
+  "description": "Chrome/Chromium extension that allows easy HTML to React conversion.",
+  "main": "",
+  "scripts": {
+    "build": "",
+    "version-major": "",
+    "version-minor": "",
+    "version-patch": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "Jess Telford <hi+htmltoreact@jes.st> (http://jes.st)",
+  "license": "GPL",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "",
+  "dependencies": {
+    "grunt": "~0.4.4",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-csslint": "~0.2.0",
+    "grunt-contrib-jshint": "~0.9.2",
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-html": "^5.0.0",
+    "grunt-zip": "~0.13.0"
+  }
+}

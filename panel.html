@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>HTML to React</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="css/panel.css" rel="stylesheet">
+</head>
+<body>
+
+  <div class="container">
+    <div id='error'>
+    </div>
+    Prefix all CSS IDs with <input type='text' id='id-prefix' placeholder="prefix_"/>
+    <button id='create'>Create a snippet from inspected element</button>
+    <h1>HTML</h1>
+    <div id='html-output'>
+    </div>
+    <h1>CSS</h1>
+    <div id='css-output'>
+    </div>
+  </div>
+
+  <script src='js/tools/CSSStringifier.js'></script>
+  <script src='js/tools/SameRulesCombiner.js'></script>
+  <script src='js/filters/DefaultValueFilter.js'></script>
+  <script src='js/filters/ShorthandPropertyFilter.js'></script>
+  <script src='js/filters/WebkitPropertiesFilter.js'></script>
+  <script src='js/tools/Snapshooter.js'></script>
+  <script src='js/tools/InspectedContext.js'></script>
+  <script src='js/panel.js'></script>
+
+</body>
+</html>
