@@ -23,7 +23,7 @@ and exporting the code for the element you selected.
 
 If you found a bug or have a feature request, please create an issue here on GitHub.
 
-https://github.com/kdzwinel/SnappySnippet/issues
+https://github.com/jesstelford/html-to-react/issues
 
 # License
 
