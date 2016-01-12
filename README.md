@@ -1,6 +1,6 @@
 # HTML to React Chrome DevTools Plugin
 
-Chrome/Chromium extension that allows easy HTML to React conversion.
+Chrome/Chromium extension for easy HTML to React conversion.
 
 ![Screenshot](TODO)
 

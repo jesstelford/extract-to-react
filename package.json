@@ -1,7 +1,7 @@
 {
   "name": "html-to-react",
   "version": "0.0.0",
-  "description": "Chrome/Chromium extension that allows easy HTML to React conversion.",
+  "description": "Chrome/Chromium extension for easy HTML to React conversion.",
   "main": "",
   "scripts": {
     "build": "",
