@@ -25,6 +25,17 @@ If you found a bug or have a feature request, please create an issue here on Git
 
 https://github.com/jesstelford/html-to-react/issues
 
+# Attribution
+
+This project is based on excellent open source software:
+
+* **[SnappySnippet](https://github.com/kdzwinel/SnappySnippet/issues)**:
+  Chrome/Chromium extension that allows easy CSS+HTML extraction of specific DOM
+  element. Created snippet can be then exported to CodePen, jsFiddle or JS Bin
+  with one click.
+* **[`html-to-react-components`](https://roman01la.github.io/html-to-react-components/)**:
+  Extract annotated portions of HTML into React components as separate modules
+
 # License
 
 Ugh... The GPL virus has infected this codebase :/
