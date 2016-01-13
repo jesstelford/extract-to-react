@@ -13,30 +13,10 @@
   <div class="container">
     <div id='error'>
     </div>
-    <h1>HTML</h1>
-    <div id='html-output'>
-    </div>
-    <h1>CSS</h1>
-    <div id='css-output'>
-    </div>
-
-    <button id="codepen">HTML -> React</button>
-    <form action="http://jsbin.com/?html,css,output" method="POST" target="_blank" id='jsbin-form'>
-      <input type="hidden" name="html" value=''/>
-      <input type="hidden" name="css" value=''/>
-      <button class="hidden">HTML -> React</button>
-    </form>
-    <form action="http://jsfiddle.net/api/post/library/pure/" method="POST" target="_blank" id='jsfiddle-form'>
-      <input type="hidden" name="html" value=''/>
-      <input type="hidden" name="css" value=''/>
-      <button class="hidden">HTML -> React</button>
-    </form>
-
-    <p>and send to
-      <label><input type="radio" name="export" value="codepen" checked="checked" />codepen</label>
-      <label><input type="radio" name="export" value="jsbin" />jsbin</label>,
-      <label><input type="radio" name="export" value="jsfiddle" />jsfiddle</label>, or
-    </p>
+    <p>Generate and upload to...</p>
+    <button id="codepen">Codepen</button>
+    <button id="jsfiddle">JSFiddle</button>
+    <button id="jsbin">JSBin</button>
   </div>
 
   <script src='js/tools/CSSStringifier.js'></script>

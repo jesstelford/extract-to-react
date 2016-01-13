@@ -1,3 +1,5 @@
+* Error output
+* Don't require uploading
 * Inline the styles:
   * Remove the to-string conversion
   * Stringify the properties only, and add them as a `style` attribute to the

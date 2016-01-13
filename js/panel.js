@@ -1,8 +1,6 @@
 (function () {
   "use strict";
 
-  chrome.runtime.sendMessage({message: 'start'});
-
   var lastSnapshot,
     cssStringifier = new CSSStringifier(),
     shorthandPropertyFilter = new ShorthandPropertyFilter(),
@@ -12,56 +10,60 @@
     inspectedContext = new InspectedContext();
 
   //Event listeners
-  var codePenButton = document.querySelector('button#codepen');
-
-  codePenButton.addEventListener('click', function (event) {
-    event.stopPropagation();
-    event.preventDefault();
-
-    makeSnapshot(function(error, output) {
-
-      if (error) {
-        chrome.runtime.sendMessage({type: 'error', message: error});
-        return;
+  linkTrigger(document.querySelector('button#codepen'), function(output) {
+    return {
+      url: 'http://codepen.io/pen/define',
+      data: {
+        "data": JSON.stringify({
+          html: output.html,
+          css: output.css
+        })
       }
+    }
+  });
 
-      chrome.runtime.sendMessage({message: 'the css'});
-      chrome.runtime.sendMessage({message: output.css});
-      /* var css = cssStringifier.process(output.css); */
-      /* chrome.runtime.sendMessage({message: 'after cssStringify'}); */
+  linkTrigger(document.querySelector('button#jsfiddle'), function(output) {
+    return {
+      url: 'http://jsfiddle.net/api/post/library/pure/',
+      data: {
+        html: output.html,
+        css: output.css
+      }
+    }
+  });
 
-      // Usage:
-      chrome.runtime.sendMessage({
-        post: {
-          url: 'http://codepen.io/pen/define',
-          data: {"data": JSON.stringify({
-            html: 'hi',
-            css: 'ho'
-          })}
+  linkTrigger(document.querySelector('button#jsbin'), function(output) {
+    return {
+      url: 'http://jsbin.com/?html,css,output',
+      data: {
+        html: encodeURIComponent(output.html),
+        css: encodeURIComponent(output.css)
+      }
+    }
+  });
+
+  function linkTrigger(button, buildPostData) {
+
+    button.addEventListener('click', function (event) {
+      event.stopPropagation();
+      event.preventDefault();
+
+      makeSnapshot(function(error, output) {
+
+        if (error) {
+          // TODO: Errors
+          chrome.runtime.sendMessage({type: 'error', message: error});
+          return;
         }
+
+        chrome.runtime.sendMessage({
+          post: buildPostData(output)
+        });
+
       });
-
     });
-  });
-/*
-  document.getElementById('jsfiddle-form').addEventListener('submit', function () {
-    chrome.runtime.sendMessage({message: 'jsfiddle form value:'});
-    var output = makeSnapshot();
-    this.querySelector('input[name=html]').value = encodeURIComponent(output.html);
-    this.querySelector('input[name=css]').value = encodeURIComponent(cssStringifier.process(output.css));
-    chrome.runtime.sendMessage({message: this.querySelector('input[name=html]').value});
-    chrome.runtime.sendMessage({message: this.querySelector('input[name=css]').value});
-  });
 
-  document.getElementById('jsbin-form').addEventListener('submit', function () {
-    chrome.runtime.sendMessage({message: 'jsbin form value:'});
-    var output = makeSnapshot();
-    this.querySelector('input[name=html]').value = encodeURIComponent(output.html);
-    this.querySelector('input[name=css]').value = encodeURIComponent(cssStringifier.process(output.css));
-    chrome.runtime.sendMessage({message: this.querySelector('input[name=html]').value});
-    chrome.runtime.sendMessage({message: this.querySelector('input[name=css]').value});
-  });
-*/
+  }
 
   function htmlStringToNodes(html) {
     var div = document.createElement('div');
@@ -72,7 +74,7 @@
   function isValidPrefix(prefix) {
     var validator = /^[a-z][a-z0-9.\-_:]*$/i;
 
-    return validator.test(prefix);
+    return prefix && validator.test(prefix);
   }
 
   function makeSnapshot(callback) {
@@ -82,6 +84,7 @@
         lastSnapshot = JSON.parse(result);
         document.getElementById('error').innerHTML = '';
       } catch (e) {
+        // TODO: Errors
         chrome.runtime.sendMessage({message: 'parse error: ' + e.message});
         document.getElementById('error').innerHTML = 'DOM snapshot could not be created. Make sure that you have inspected some element.';
         return callback(e);
@@ -90,6 +93,7 @@
       try {
         return callback(null, processSnapshot());
       } catch (e) {
+        // TODO: Errors
         chrome.runtime.sendMessage({message: 'process error: ' + e.message});
         return callback(e);
       }
@@ -118,8 +122,8 @@
     }
 
     //replacing prefix placeholder used in all IDs with actual prefix
-    /* html = htmlStringToNodes(html)[0].outerHTML.replace(/:reacttohtml_prefix:/g, prefix); */
-    /* styles = styles.replace(/:reacttohtml_prefix:/g, prefix); */
+    html = html.replace(/:reacttohtml_prefix:/g, prefix);
+    styles = styles.replace(/:reacttohtml_prefix:/g, prefix);
 
     return {
       html: html,
