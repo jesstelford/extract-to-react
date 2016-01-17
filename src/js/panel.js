@@ -1,16 +1,19 @@
 (function () {
   "use strict";
 
-  var lastSnapshot,
-    cssStringifier = new CSSStringifier(),
-    shorthandPropertyFilter = new ShorthandPropertyFilter(),
-    webkitPropertiesFilter = new WebkitPropertiesFilter(),
-    defaultValueFilter = new DefaultValueFilter(),
-    sameRulesCombiner = new SameRulesCombiner(),
-    inspectedContext = new InspectedContext();
+  var Snapshooter = require('./tools/Snapshooter'),
+      cssStringifier = new (require('./tools/CSSStringifier')),
+      shorthandPropertyFilter = new (require('./filters/ShorthandPropertyFilter')),
+      webkitPropertiesFilter = new (require('./filters/WebkitPropertiesFilter')),
+      defaultValueFilter = new (require('./filters/DefaultValueFilter')),
+      sameRulesCombiner = new (require('./tools/SameRulesCombiner')),
+      inspectedContext = new (require('./tools/InspectedContext'));
+
+  var lastSnapshot;
 
   //Event listeners
   linkTrigger(document.querySelector('button#codepen'), function(output) {
+
     return {
       url: 'http://codepen.io/pen/define',
       data: {

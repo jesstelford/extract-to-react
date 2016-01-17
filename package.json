@@ -4,10 +4,14 @@
   "description": "Chrome/Chromium extension for easy HTML to React conversion.",
   "main": "",
   "scripts": {
-    "build": "",
-    "version-major": "",
-    "version-minor": "",
-    "version-patch": ""
+    "build": "npm run build-prep && npm run build-static && npm run build-js",
+    "build-prep": "mkdir -p lib/js",
+    "build-gfx": "(cd src; tar -cf - $(find ./gfx -name \"*.png\")) | tar -C lib -xf -",
+    "build-css": "(cd src; tar -cf - $(find ./css -name \"*.css\")) | tar -C lib -xf -",
+    "build-html": "(cd src; tar -cf - $(find ./html -name \"*.html\")) | tar -C lib -xf - && cp src/devtools.html lib/devtools.html",
+    "build-manifest": "cp src/manifest.json lib/",
+    "build-static": "npm run build-gfx && npm run build-css && npm run build-html && npm run build-manifest",
+    "build-js": "browserify $(find ./src/js -maxdepth 1 -name \"*.js\") -t [ babelify --presets [ es2015 ] ] -p [ factor-bundle -o 'cat > lib/js/`basename $FILE`' ] > lib/js/common.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +24,7 @@
   },
   "homepage": "",
   "dependencies": {
+    "babelify": "^7.2.0",
     "grunt": "~0.4.4",
     "grunt-cli": "^0.1.13",
     "grunt-contrib-csslint": "~0.2.0",
@@ -27,5 +32,10 @@
     "grunt-contrib-watch": "~0.6.1",
     "grunt-html": "^5.0.0",
     "grunt-zip": "~0.13.0"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.3.13",
+    "browserify": "^13.0.0",
+    "factor-bundle": "^2.5.0"
   }
 }

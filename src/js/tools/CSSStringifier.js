@@ -3,7 +3,7 @@
  *
  * @constructor
  */
-function CSSStringifier() {
+module.exports = function CSSStringifier() {
   "use strict";
 
   function propertiesToString(properties) {

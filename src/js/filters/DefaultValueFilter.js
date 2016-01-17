@@ -3,7 +3,7 @@
  *
  * @constructor
  */
-function DefaultValueFilter() {
+module.exports = function DefaultValueFilter() {
   "use strict";
   var iframe;
 

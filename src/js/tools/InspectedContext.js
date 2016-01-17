@@ -3,7 +3,7 @@
  *
  * @constructor
  */
-function InspectedContext() {
+module.exports = function InspectedContext() {
   "use strict";
 
   function scanResources(callback, resources) {

@@ -4,7 +4,7 @@
  * @param HTMLElement root Root node for the subtree that will be processed
  * @returns {*} object with HTML as a string and CSS as an array of arrays of css properties
  */
-function Snapshooter(root) {
+module.exports = function Snapshooter(root) {
   "use strict";
 
   // list of shorthand properties based on CSSShorthands.in from the Chromium code (https://code.google.com/p/chromium/codesearch)

@@ -11,7 +11,7 @@
  *
  * @constructor
  */
-function SameRulesCombiner() {
+module.exports = function SameRulesCombiner() {
   "use strict";
 
   function compareRules(rulesA, rulesB) {
