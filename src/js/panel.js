@@ -2,6 +2,7 @@
   "use strict";
 
   var Snapshooter = require('./tools/Snapshooter'),
+      extractReactComponents = require('html-to-react-components'),
       cssStringifier = new (require('./tools/CSSStringifier')),
       shorthandPropertyFilter = new (require('./filters/ShorthandPropertyFilter')),
       webkitPropertiesFilter = new (require('./filters/WebkitPropertiesFilter')),
@@ -74,6 +75,12 @@
     return div.childNodes;
   }
 
+  function setAttributeToRoot(html, attribute, value) {
+    var htmlNode = htmlStringToNodes(html)[0];
+    htmlNode.setAttribute(attribute, value);
+    return htmlNode.outerHTML;
+  }
+
   function isValidPrefix(prefix) {
     var validator = /^[a-z][a-z0-9.\-_:]*$/i;
 
@@ -112,7 +119,8 @@
     var styles = lastSnapshot.css,
       html = lastSnapshot.html,
       prefix = "",
-      idPrefix = (document.getElementById('id-prefix') || {}).value;
+      idPrefix = (document.getElementById('id-prefix') || {}).value,
+      components;
 
     styles = defaultValueFilter.process(styles);
     styles = shorthandPropertyFilter.process(styles);
@@ -127,6 +135,15 @@
     //replacing prefix placeholder used in all IDs with actual prefix
     html = html.replace(/:reacttohtml_prefix:/g, prefix);
     styles = styles.replace(/:reacttohtml_prefix:/g, prefix);
+
+    html = setAttributeToRoot(html, 'data-component', 'Component');
+
+    components = extractReactComponents(html, {
+      componentType: 'es5',
+      moduleType: false
+    });
+
+    html = Object.keys(components).map(key => components[key]).join('\n');
 
     return {
       html: html,
