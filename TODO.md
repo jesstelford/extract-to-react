@@ -1,3 +1,5 @@
+* Remove writeToFS in html-to-react
+* Rename to "Extract to react
 * Error output
 * Don't require uploading
 * Inline the styles:

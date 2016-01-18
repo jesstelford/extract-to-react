@@ -11,7 +11,7 @@
     "build-html": "(cd src; tar -cf - $(find ./html -name \"*.html\")) | tar -C lib -xf - && cp src/devtools.html lib/devtools.html",
     "build-manifest": "cp src/manifest.json lib/",
     "build-static": "npm run build-gfx && npm run build-css && npm run build-html && npm run build-manifest",
-    "build-js": "browserify $(find ./src/js -maxdepth 1 -name \"*.js\") -t [ babelify --presets [ es2015 ] ] -p [ factor-bundle -o 'cat > lib/js/`basename $FILE`' ] > lib/js/common.js"
+    "build-js": "find ./src/js -maxdepth 1 -name '*.js' -exec bash -c 'browserify \"$0\" -t [ babelify --presets [ es2015 ] ] -o \"${0/src/lib}\"' {} \\;"
   },
   "repository": {
     "type": "git",
@@ -25,11 +25,10 @@
   "homepage": "",
   "dependencies": {
     "babelify": "^7.2.0",
-    "html-to-react-components": "github:jesstelford/html-to-react-components#html-to-react"
+    "html-to-react-components": "github:roman01la/html-to-react-components#775e9b1"
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.3.13",
-    "browserify": "^13.0.0",
-    "factor-bundle": "^2.5.0"
+    "browserify": "^13.0.0"
   }
 }
