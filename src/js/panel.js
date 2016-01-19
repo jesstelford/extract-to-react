@@ -20,7 +20,10 @@
       data: {
         "data": JSON.stringify({
           html: output.html,
-          css: output.css
+          css: output.css,
+          js: output.js,
+          js_external: 'https://cdnjs.cloudflare.com/ajax/libs/react/0.14.6/react.min.js;https://cdnjs.cloudflare.com/ajax/libs/react/0.14.6/react-dom.min.js',
+          js_pre_processor: 'babel'
         })
       }
     }
@@ -118,9 +121,11 @@
 
     var styles = lastSnapshot.css,
       html = lastSnapshot.html,
+      js,
       prefix = "",
       idPrefix = (document.getElementById('id-prefix') || {}).value,
-      components;
+      components,
+      componentKeys;
 
     styles = defaultValueFilter.process(styles);
     styles = shorthandPropertyFilter.process(styles);
@@ -143,10 +148,19 @@
       moduleType: false
     });
 
-    html = Object.keys(components).map(key => components[key]).join('\n');
+    componentKeys = Object.keys(components);
+
+    js = componentKeys.map(key => components[key]).join('\n');
+
+    js += `
+ReactDOM.render(
+  <${componentKeys[0]} />,
+  document.getElementById('container')
+);`;
 
     return {
-      html: html,
+      html: '<div id="container"></div>',
+      js: js,
       css: styles
     };
 
