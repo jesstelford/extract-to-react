@@ -30,11 +30,22 @@
   });
 
   linkTrigger(document.querySelector('button#jsfiddle'), function(output) {
+
+    // Code required to trigger babel conversion of JSX
+    var html = output.html
+      + '\n\n'
+      + '<!-- Trigger babel conversion of JSX -->\n'
+      + '<script>document.querySelector(\'script[type="application/javascript;version=1.7"]\').setAttribute(\'type\', \'text/babel\');</script>';
+
     return {
       url: 'http://jsfiddle.net/api/post/library/pure/',
       data: {
-        html: output.html,
-        css: output.css
+        html: html,
+        css: output.css,
+        js: output.js,
+        resources: 'https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.js,https://cdnjs.cloudflare.com/ajax/libs/react/0.14.6/react.min.js,https://cdnjs.cloudflare.com/ajax/libs/react/0.14.6/react-dom.min.js',
+        wrap: 'h',// No wrap, in the head
+        panel_js: 2 // version 1.7
       }
     }
   });
