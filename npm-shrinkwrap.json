@@ -1,5 +1,5 @@
 {
-  "name": "html-to-react",
+  "name": "extract-to-react",
   "version": "0.0.0",
   "dependencies": {
     "abbrev": {

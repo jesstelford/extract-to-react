@@ -1,5 +1,5 @@
 {
-  "name": "Html to React",
+  "name": "Extract to React",
   "description": "Chrome/Chromium extension that allows easy HTML to React conversion.",
   "version": "0.5",
   "manifest_version": 2,

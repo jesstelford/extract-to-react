@@ -1,5 +1,5 @@
 {
-  "name": "html-to-react",
+  "name": "extract-to-react",
   "version": "0.0.0",
   "description": "Chrome/Chromium extension for easy HTML to React conversion.",
   "main": "",
@@ -17,10 +17,10 @@
     "type": "git",
     "url": ""
   },
-  "author": "Jess Telford <hi+htmltoreact@jes.st> (http://jes.st)",
+  "author": "Jess Telford <hi+extracttoreact@jes.st> (http://jes.st)",
   "license": "GPL",
   "bugs": {
-    "url": "https://github.com/jesstelford/html-to-react/issues"
+    "url": "https://github.com/jesstelford/extract-to-react/issues"
   },
   "homepage": "",
   "dependencies": {

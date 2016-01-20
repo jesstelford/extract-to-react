@@ -1,4 +1,4 @@
-# HTML to React Chrome DevTools Plugin
+# Extract to React Chrome DevTools Plugin
 
 Chrome/Chromium extension for easy HTML to React conversion.
 
@@ -15,7 +15,7 @@ extensions page.
 
 ## Usage
 
-Open Developer Tools, you should see the new HTML to React tab. Inspect an
+Open Developer Tools, you should see the new Extract To React tab. Inspect an
 element on the page and switch to the new tab, you will see options for settings
 and exporting the code for the element you selected.
 
@@ -23,7 +23,7 @@ and exporting the code for the element you selected.
 
 If you found a bug or have a feature request, please create an issue here on GitHub.
 
-https://github.com/jesstelford/html-to-react/issues
+https://github.com/jesstelford/extract-to-react/issues
 
 # Attribution
 
