@@ -50,15 +50,19 @@
     }
   });
 
+  // Disabled until jsbin supports babel: https://github.com/jsbin/jsbin/pull/2633
+  /*
   linkTrigger(document.querySelector('button#jsbin'), function(output) {
     return {
-      url: 'http://jsbin.com/?html,css,output',
+      url: 'http://jsbin.com/?html,css,js,output',
       data: {
+        babel: encodeURIComponent(output.js),
         html: encodeURIComponent(output.html),
         css: encodeURIComponent(output.css)
       }
     }
   });
+  */
 
   function linkTrigger(button, buildPostData) {
 
