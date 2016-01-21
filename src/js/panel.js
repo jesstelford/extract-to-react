@@ -1,6 +1,8 @@
 (function () {
   "use strict";
 
+  const DEFAULT_COMPONENT_NAME = 'Component';
+
   var Snapshooter = require('./tools/Snapshooter'),
       extractReactComponents = require('html-to-react-components'),
       cssStringifier = new (require('./tools/CSSStringifier')),
@@ -95,7 +97,9 @@
 
   function setAttributeToRoot(html, attribute, value) {
     var htmlNode = htmlStringToNodes(html)[0];
-    htmlNode.setAttribute(attribute, value);
+    if (!htmlNode.getAttribute(attribute)) {
+      htmlNode.setAttribute(attribute, value);
+    }
     return htmlNode.outerHTML;
   }
 
@@ -156,7 +160,7 @@
     html = html.replace(/:reacttohtml_prefix:/g, prefix);
     styles = styles.replace(/:reacttohtml_prefix:/g, prefix);
 
-    html = setAttributeToRoot(html, 'data-component', 'Component');
+    html = setAttributeToRoot(html, 'data-component', DEFAULT_COMPONENT_NAME);
 
     components = extractReactComponents(html, {
       componentType: 'es5',
