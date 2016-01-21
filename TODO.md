@@ -1,5 +1,7 @@
-* Remove writeToFS in html-to-react
-* Rename to "Extract to react
+* Panel UI
+  * Show a preview of the inspected element
+  * Be able to highlight the inspected element in the browser window
+* Only inject component name if the node doesn't already have it.
 * Error output
 * Don't require uploading
 * Inline the styles:
