@@ -6,12 +6,21 @@ Chrome/Chromium extension for easy HTML to React conversion.
 
 ## Installation
 
-You may install this extension from its google chrome webstore page
+~~You may install this extension from its google chrome webstore page~~
 
 [TODO](TODO)
 
-or download it and manually load as an 'Unpacked extension' via chrome
-extensions page.
+### Building From Source
+
+```bash
+git clone https://github.com/jesstelford/extract-to-react.git
+cd extract-to-react
+npm install
+npm build
+```
+
+Now load as an `Unpacked extension` via chrome extensions page. Point to the
+`extract-to-react/lib` folder for the compiled extension.
 
 ## Usage
 
@@ -21,7 +30,8 @@ and exporting the code for the element you selected.
 
 # Bugs and Features
 
-If you found a bug or have a feature request, please create an issue here on GitHub.
+If you found a bug or have a feature request, please create an issue here on
+GitHub.
 
 https://github.com/jesstelford/extract-to-react/issues
 
