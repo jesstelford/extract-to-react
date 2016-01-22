@@ -1,9 +1,12 @@
 (function () {
   "use strict";
 
+  window.handleInspected = handleInspected;
+
   const DEFAULT_COMPONENT_NAME = 'Component';
 
-  var Snapshooter = require('./tools/Snapshooter'),
+  var he = require('he'),
+      Snapshooter = require('./tools/Snapshooter'),
       extractReactComponents = require('html-to-react-components'),
       cssStringifier = new (require('./tools/CSSStringifier')),
       shorthandPropertyFilter = new (require('./filters/ShorthandPropertyFilter')),
@@ -11,8 +14,6 @@
       defaultValueFilter = new (require('./filters/DefaultValueFilter')),
       sameRulesCombiner = new (require('./tools/SameRulesCombiner')),
       inspectedContext = new (require('./tools/InspectedContext'));
-
-  var lastSnapshot;
 
   //Event listeners
   linkTrigger(document.querySelector('button#codepen'), function(output) {
@@ -80,6 +81,8 @@
           return;
         }
 
+        output = convertToReact(output);
+
         chrome.runtime.sendMessage({
           post: buildPostData(output)
         });
@@ -89,14 +92,14 @@
 
   }
 
-  function htmlStringToNodes(html) {
+  function htmlStringToNodesArray(html) {
     var div = document.createElement('div');
     div.innerHTML = html;
-    return div.childNodes;
+    return Array.prototype.slice.call(div.childNodes);
   }
 
   function setAttributeToRoot(html, attribute, value) {
-    var htmlNode = htmlStringToNodes(html)[0];
+    var htmlNode = htmlStringToNodesArray(html)[0];
     if (!htmlNode.getAttribute(attribute)) {
       htmlNode.setAttribute(attribute, value);
     }
@@ -109,11 +112,43 @@
     return prefix && validator.test(prefix);
   }
 
+  function handleInspected() {
+
+    makeSnapshot(function(error, output) {
+
+      if (error) {
+        // TODO: Errors
+        chrome.runtime.sendMessage({type: 'error', message: error});
+        return;
+      }
+
+      showInspectedHtml(output.html);
+
+    });
+  }
+
+  function showInspectedHtml(html) {
+    document.getElementById('inspected').innerHTML = prettyPrintHtml(html).join('<br />');
+  }
+
+  function prettyPrintHtml(html) {
+    return htmlStringToNodesArray(html).map(el => {
+      var wrappingTags = el.outerHTML.split(el.innerHTML);
+      // TODO: Do this in CSS with overflow:elipses
+      if (wrappingTags[0].length > 20) {
+        wrappingTags[0] = wrappingTags[0].slice(0, 16) + '...>';
+      }
+      var shortHtml = wrappingTags.join('...');
+      return he.escape(shortHtml);
+    })
+  }
+
   function makeSnapshot(callback) {
 
     inspectedContext.eval("(" + Snapshooter.toString() + ")($0)", function (result) {
+      var snapshot;
       try {
-        lastSnapshot = JSON.parse(result);
+        snapshot = JSON.parse(result);
         document.getElementById('error').innerHTML = '';
       } catch (e) {
         // TODO: Errors
@@ -123,7 +158,7 @@
       }
 
       try {
-        return callback(null, processSnapshot());
+        return callback(null, extractHtmlCss(snapshot));
       } catch (e) {
         // TODO: Errors
         chrome.runtime.sendMessage({message: 'process error: ' + e.message});
@@ -133,13 +168,13 @@
     });
   }
 
-  function processSnapshot() {
-    if (!lastSnapshot) {
+  function extractHtmlCss(snapshot) {
+    if (!snapshot) {
       return;
     }
 
-    var styles = lastSnapshot.css,
-      html = lastSnapshot.html,
+    var styles = snapshot.css,
+      html = snapshot.html,
       js,
       prefix = "",
       idPrefix = (document.getElementById('id-prefix') || {}).value,
@@ -160,18 +195,24 @@
     html = html.replace(/:reacttohtml_prefix:/g, prefix);
     styles = styles.replace(/:reacttohtml_prefix:/g, prefix);
 
+    return {
+      html,
+      css: styles
+    };
+
+  }
+
+  function convertToReact({html, css}) {
+
     html = setAttributeToRoot(html, 'data-component', DEFAULT_COMPONENT_NAME);
 
-    components = extractReactComponents(html, {
-      componentType: 'es5',
-      moduleType: false
-    });
-
-    componentKeys = Object.keys(components);
-
-    js = componentKeys.map(key => components[key]).join('\n');
-
-    js += `
+    var components = extractReactComponents(html, {
+          componentType: 'es5',
+          moduleType: false
+        }),
+        componentKeys = Object.keys(components),
+        js = componentKeys.map(key => components[key]).join('\n')
+          + `
 ReactDOM.render(
   <${componentKeys[0]} />,
   document.getElementById('container')
@@ -179,8 +220,8 @@ ReactDOM.render(
 
     return {
       html: '<div id="container"></div>',
-      js: js,
-      css: styles
+      js,
+      css
     };
 
   }
