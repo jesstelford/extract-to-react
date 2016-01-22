@@ -16,7 +16,7 @@ Chrome/Chromium extension for easy HTML to React conversion.
 git clone https://github.com/jesstelford/extract-to-react.git
 cd extract-to-react
 npm install
-npm build
+npm run build
 ```
 
 Now load as an `Unpacked extension` via chrome extensions page. Point to the
