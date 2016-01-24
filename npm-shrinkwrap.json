@@ -90,14 +90,7 @@
     "babel-core": {
       "version": "6.4.5",
       "from": "babel-core@>=6.0.14 <7.0.0",
-      "resolved": "http://registry.npmjs.org/babel-core/-/babel-core-6.4.5.tgz",
-      "dependencies": {
-        "minimatch": {
-          "version": "2.0.10",
-          "from": "minimatch@>=2.0.3 <3.0.0",
-          "resolved": "http://registry.npmjs.org/minimatch/-/minimatch-2.0.10.tgz"
-        }
-      }
+      "resolved": "http://registry.npmjs.org/babel-core/-/babel-core-6.4.5.tgz"
     },
     "babel-generator": {
       "version": "6.4.5",
@@ -270,9 +263,9 @@
       "resolved": "http://registry.npmjs.org/babel-register/-/babel-register-6.4.3.tgz"
     },
     "babel-runtime": {
-      "version": "5.8.34",
+      "version": "5.8.35",
       "from": "babel-runtime@>=5.0.0 <6.0.0",
-      "resolved": "http://registry.npmjs.org/babel-runtime/-/babel-runtime-5.8.34.tgz"
+      "resolved": "http://registry.npmjs.org/babel-runtime/-/babel-runtime-5.8.35.tgz"
     },
     "babel-template": {
       "version": "6.3.13",
@@ -280,9 +273,9 @@
       "resolved": "http://registry.npmjs.org/babel-template/-/babel-template-6.3.13.tgz"
     },
     "babel-traverse": {
-      "version": "6.3.26",
-      "from": "babel-traverse@>=6.3.26 <7.0.0",
-      "resolved": "http://registry.npmjs.org/babel-traverse/-/babel-traverse-6.3.26.tgz"
+      "version": "6.4.5",
+      "from": "babel-traverse@>=6.4.5 <7.0.0",
+      "resolved": "http://registry.npmjs.org/babel-traverse/-/babel-traverse-6.4.5.tgz"
     },
     "babel-types": {
       "version": "6.4.5",
@@ -320,9 +313,9 @@
       "resolved": "http://registry.npmjs.org/bl/-/bl-1.0.1.tgz"
     },
     "bn.js": {
-      "version": "4.6.4",
+      "version": "4.8.0",
       "from": "bn.js@>=4.1.1 <5.0.0",
-      "resolved": "http://registry.npmjs.org/bn.js/-/bn.js-4.6.4.tgz"
+      "resolved": "http://registry.npmjs.org/bn.js/-/bn.js-4.8.0.tgz"
     },
     "boom": {
       "version": "2.10.1",
@@ -350,14 +343,14 @@
       "resolved": "http://registry.npmjs.org/browser-request/-/browser-request-0.3.3.tgz"
     },
     "browser-resolve": {
-      "version": "1.11.0",
+      "version": "1.11.1",
       "from": "browser-resolve@>=1.11.0 <2.0.0",
-      "resolved": "http://registry.npmjs.org/browser-resolve/-/browser-resolve-1.11.0.tgz"
+      "resolved": "http://registry.npmjs.org/browser-resolve/-/browser-resolve-1.11.1.tgz"
     },
     "browserify-aes": {
-      "version": "1.0.5",
+      "version": "1.0.6",
       "from": "browserify-aes@>=1.0.4 <2.0.0",
-      "resolved": "http://registry.npmjs.org/browserify-aes/-/browserify-aes-1.0.5.tgz"
+      "resolved": "http://registry.npmjs.org/browserify-aes/-/browserify-aes-1.0.6.tgz"
     },
     "browserify-cipher": {
       "version": "1.0.0",
@@ -412,9 +405,9 @@
       "resolved": "http://registry.npmjs.org/builtin-status-codes/-/builtin-status-codes-1.0.0.tgz"
     },
     "camelcase": {
-      "version": "2.0.1",
+      "version": "2.1.0",
       "from": "camelcase@>=2.0.0 <3.0.0",
-      "resolved": "http://registry.npmjs.org/camelcase/-/camelcase-2.0.1.tgz"
+      "resolved": "http://registry.npmjs.org/camelcase/-/camelcase-2.1.0.tgz"
     },
     "camelcase-keys": {
       "version": "2.0.0",
@@ -539,21 +532,14 @@
       "resolved": "http://registry.npmjs.org/cssom/-/cssom-0.3.0.tgz"
     },
     "cssstyle": {
-      "version": "0.2.30",
+      "version": "0.2.31",
       "from": "cssstyle@>=0.2.21 <0.3.0",
-      "resolved": "http://registry.npmjs.org/cssstyle/-/cssstyle-0.2.30.tgz"
+      "resolved": "http://registry.npmjs.org/cssstyle/-/cssstyle-0.2.31.tgz"
     },
     "cst": {
       "version": "0.0.16",
       "from": "cst@0.0.16",
-      "resolved": "http://registry.npmjs.org/cst/-/cst-0.0.16.tgz",
-      "dependencies": {
-        "babylon": {
-          "version": "5.8.34",
-          "from": "babylon@>=5.8.29 <6.0.0",
-          "resolved": "http://registry.npmjs.org/babylon/-/babylon-5.8.34.tgz"
-        }
-      }
+      "resolved": "http://registry.npmjs.org/cst/-/cst-0.0.16.tgz"
     },
     "dashdash": {
       "version": "1.12.2",
@@ -670,9 +656,9 @@
       "resolved": "http://registry.npmjs.org/ecc-jsbn/-/ecc-jsbn-0.1.1.tgz"
     },
     "elliptic": {
-      "version": "6.1.0",
+      "version": "6.2.1",
       "from": "elliptic@>=6.0.0 <7.0.0",
-      "resolved": "http://registry.npmjs.org/elliptic/-/elliptic-6.1.0.tgz"
+      "resolved": "http://registry.npmjs.org/elliptic/-/elliptic-6.2.1.tgz"
     },
     "entities": {
       "version": "1.1.1",
@@ -729,14 +715,7 @@
     "esformatter-jsx": {
       "version": "4.1.1",
       "from": "esformatter-jsx@>=4.1.0 <5.0.0",
-      "resolved": "http://registry.npmjs.org/esformatter-jsx/-/esformatter-jsx-4.1.1.tgz",
-      "dependencies": {
-        "babylon": {
-          "version": "6.1.21",
-          "from": "babylon@6.1.21",
-          "resolved": "http://registry.npmjs.org/babylon/-/babylon-6.1.21.tgz"
-        }
-      }
+      "resolved": "http://registry.npmjs.org/esformatter-jsx/-/esformatter-jsx-4.1.1.tgz"
     },
     "esformatter-quotes": {
       "version": "1.0.3",
@@ -866,9 +845,14 @@
       "resolved": "http://registry.npmjs.org/hash.js/-/hash.js-1.0.3.tgz"
     },
     "hawk": {
-      "version": "3.1.2",
+      "version": "3.1.3",
       "from": "hawk@>=3.1.0 <3.2.0",
-      "resolved": "http://registry.npmjs.org/hawk/-/hawk-3.1.2.tgz"
+      "resolved": "http://registry.npmjs.org/hawk/-/hawk-3.1.3.tgz"
+    },
+    "he": {
+      "version": "0.5.0",
+      "from": "he@>=0.5.0 <0.6.0",
+      "resolved": "http://registry.npmjs.org/he/-/he-0.5.0.tgz"
     },
     "hoek": {
       "version": "2.16.3",
@@ -887,23 +871,23 @@
     },
     "html-to-react-components": {
       "version": "1.3.2",
-      "from": "jesstelford/html-to-react-components#no-fs-env",
-      "resolved": "git://github.com/jesstelford/html-to-react-components.git#764996bfb12b1c21617ec2904a28fefdd1cabed6",
+      "from": "roman01la/html-to-react-components#c65387c3ef9b9a973ca6ab7800c6302d302038e1",
+      "resolved": "git://github.com/roman01la/html-to-react-components.git#c65387c3ef9b9a973ca6ab7800c6302d302038e1",
       "dependencies": {
         "babel-generator": {
           "version": "6.3.26",
           "from": "babel-generator@6.3.26",
           "resolved": "http://registry.npmjs.org/babel-generator/-/babel-generator-6.3.26.tgz"
         },
+        "babel-traverse": {
+          "version": "6.3.26",
+          "from": "babel-traverse@6.3.26",
+          "resolved": "http://registry.npmjs.org/babel-traverse/-/babel-traverse-6.3.26.tgz"
+        },
         "babel-types": {
           "version": "6.3.24",
           "from": "babel-types@6.3.24",
           "resolved": "http://registry.npmjs.org/babel-types/-/babel-types-6.3.24.tgz"
-        },
-        "babylon": {
-          "version": "6.3.26",
-          "from": "babylon@6.3.26",
-          "resolved": "http://registry.npmjs.org/babylon/-/babylon-6.3.26.tgz"
         }
       }
     },
@@ -1050,6 +1034,11 @@
       "version": "0.0.1",
       "from": "isarray@0.0.1",
       "resolved": "http://registry.npmjs.org/isarray/-/isarray-0.0.1.tgz"
+    },
+    "isexe": {
+      "version": "1.0.1",
+      "from": "isexe@>=1.0.1 <2.0.0",
+      "resolved": "http://registry.npmjs.org/isexe/-/isexe-1.0.1.tgz"
     },
     "isstream": {
       "version": "0.1.2",
@@ -1244,9 +1233,9 @@
       "resolved": "http://registry.npmjs.org/minimalistic-assert/-/minimalistic-assert-1.0.0.tgz"
     },
     "minimatch": {
-      "version": "3.0.0",
-      "from": "minimatch@>=2.0.0 <3.0.0||>=3.0.0 <4.0.0",
-      "resolved": "http://registry.npmjs.org/minimatch/-/minimatch-3.0.0.tgz"
+      "version": "2.0.10",
+      "from": "minimatch@>=2.0.3 <3.0.0",
+      "resolved": "http://registry.npmjs.org/minimatch/-/minimatch-2.0.10.tgz"
     },
     "minimist": {
       "version": "1.2.0",
@@ -1563,9 +1552,9 @@
       }
     },
     "resolve": {
-      "version": "1.1.6",
+      "version": "1.1.7",
       "from": "resolve@>=1.1.5 <2.0.0",
-      "resolved": "https://registry.npmjs.org/resolve/-/resolve-1.1.6.tgz"
+      "resolved": "http://registry.npmjs.org/resolve/-/resolve-1.1.7.tgz"
     },
     "right-align": {
       "version": "0.1.3",
@@ -1923,9 +1912,9 @@
       "resolved": "http://registry.npmjs.org/vm-browserify/-/vm-browserify-0.0.4.tgz"
     },
     "which": {
-      "version": "1.2.1",
+      "version": "1.2.2",
       "from": "which@>=1.1.1 <2.0.0",
-      "resolved": "http://registry.npmjs.org/which/-/which-1.2.1.tgz"
+      "resolved": "http://registry.npmjs.org/which/-/which-1.2.2.tgz"
     },
     "window-size": {
       "version": "0.1.0",
