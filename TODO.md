@@ -1,5 +1,4 @@
 * Panel UI
-  * Show a preview of the inspected element
   * Be able to highlight the inspected element in the browser window
 * Error output
 * Don't require uploading
