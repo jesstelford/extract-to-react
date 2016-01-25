@@ -3,7 +3,9 @@
 
   window.handleInspected = handleInspected;
 
-  var makeSnapshot = require('./tools/make-snapshot'),
+  var he = require('he'),
+      packageJson = require('../../package.json'),
+      makeSnapshot = require('./tools/make-snapshot'),
       convertToReact = require('./tools/convert-to-react'),
       prettyPrintHtml = require('./tools/pretty-print-html'),
       htmlStringToNodesArray = require('./tools/html-string-to-nodes');
@@ -68,13 +70,20 @@
 
       makeSnapshot(function(error, output) {
 
+        var originalHtml,
+            bugUrl = packageJson.bugs.url + '/new';
+
         if (error) {
           // TODO: Errors
           chrome.runtime.sendMessage({type: 'error', message: error.toString() + '\n' + error.stack});
           return;
         }
 
+        originalHtml = output.html;
+
         output = convertToReact(output);
+
+        output.js = '// Not working? Report it here: ' + bugUrl + '?body=' + encodeURIComponent(buildErrorReport(originalHtml)) + '\n\n' + output.js;
 
         chrome.runtime.sendMessage({
           post: buildPostData(output)
@@ -83,6 +92,10 @@
       });
     });
 
+  }
+
+  function buildErrorReport(html) {
+    return 'Error when converting:\n\n```html\n' + html + '\n```';
   }
 
   function handleInspected() {
