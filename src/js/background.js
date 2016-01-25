@@ -5,11 +5,11 @@ chrome.runtime.onMessage.addListener(function (message, sender, callback) {
     postData(message.post.url, message.post.data);
   } else {
 
-    if (message.type) {
-      console.log(message.type);
+    if (message.type && console[message.type]) {
+      console[message.type](message.message);
+    } else {
+      console.log(message.message);
     }
-
-    console.log(message.message);
   }
 });
 

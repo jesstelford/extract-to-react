@@ -3,17 +3,10 @@
 
   window.handleInspected = handleInspected;
 
-  const DEFAULT_COMPONENT_NAME = 'Component';
-
-  var he = require('he'),
-      Snapshooter = require('./tools/Snapshooter'),
-      extractReactComponents = require('html-to-react-components'),
-      cssStringifier = new (require('./tools/CSSStringifier')),
-      shorthandPropertyFilter = new (require('./filters/ShorthandPropertyFilter')),
-      webkitPropertiesFilter = new (require('./filters/WebkitPropertiesFilter')),
-      defaultValueFilter = new (require('./filters/DefaultValueFilter')),
-      sameRulesCombiner = new (require('./tools/SameRulesCombiner')),
-      inspectedContext = new (require('./tools/InspectedContext'));
+  var makeSnapshot = require('./tools/make-snapshot'),
+      convertToReact = require('./tools/convert-to-react'),
+      prettyPrintHtml = require('./tools/pretty-print-html'),
+      htmlStringToNodesArray = require('./tools/html-string-to-nodes');
 
   //Event listeners
   linkTrigger(document.querySelector('button#codepen'), function(output) {
@@ -77,7 +70,7 @@
 
         if (error) {
           // TODO: Errors
-          chrome.runtime.sendMessage({type: 'error', message: error});
+          chrome.runtime.sendMessage({type: 'error', message: error.toString() + '\n' + error.stack});
           return;
         }
 
@@ -90,26 +83,6 @@
       });
     });
 
-  }
-
-  function htmlStringToNodesArray(html) {
-    var div = document.createElement('div');
-    div.innerHTML = html;
-    return Array.prototype.slice.call(div.childNodes);
-  }
-
-  function setAttributeToRoot(html, attribute, value) {
-    var htmlNode = htmlStringToNodesArray(html)[0];
-    if (!htmlNode.getAttribute(attribute)) {
-      htmlNode.setAttribute(attribute, value);
-    }
-    return htmlNode.outerHTML;
-  }
-
-  function isValidPrefix(prefix) {
-    var validator = /^[a-z][a-z0-9.\-_:]*$/i;
-
-    return prefix && validator.test(prefix);
   }
 
   function handleInspected() {
@@ -131,98 +104,4 @@
     document.getElementById('inspected').innerHTML = prettyPrintHtml(html).join('<br />');
   }
 
-  function prettyPrintHtml(html) {
-    return htmlStringToNodesArray(html).map(el => {
-      var wrappingTags = el.outerHTML.split(el.innerHTML);
-      // TODO: Do this in CSS with overflow:elipses
-      if (wrappingTags[0].length > 20) {
-        wrappingTags[0] = wrappingTags[0].slice(0, 16) + '...>';
-      }
-      var shortHtml = wrappingTags.join('...');
-      return he.escape(shortHtml);
-    })
-  }
-
-  function makeSnapshot(callback) {
-
-    inspectedContext.eval("(" + Snapshooter.toString() + ")($0)", function (result) {
-      var snapshot;
-      try {
-        snapshot = JSON.parse(result);
-        document.getElementById('error').innerHTML = '';
-      } catch (e) {
-        // TODO: Errors
-        chrome.runtime.sendMessage({message: 'parse error: ' + e.message});
-        document.getElementById('error').innerHTML = 'DOM snapshot could not be created. Make sure that you have inspected some element.';
-        return callback(e);
-      }
-
-      try {
-        return callback(null, extractHtmlCss(snapshot));
-      } catch (e) {
-        // TODO: Errors
-        chrome.runtime.sendMessage({message: 'process error: ' + e.message});
-        return callback(e);
-      }
-
-    });
-  }
-
-  function extractHtmlCss(snapshot) {
-    if (!snapshot) {
-      return;
-    }
-
-    var styles = snapshot.css,
-      html = snapshot.html,
-      js,
-      prefix = "",
-      idPrefix = (document.getElementById('id-prefix') || {}).value,
-      components,
-      componentKeys;
-
-    styles = defaultValueFilter.process(styles);
-    styles = shorthandPropertyFilter.process(styles);
-    styles = webkitPropertiesFilter.process(styles);
-    styles = sameRulesCombiner.process(styles);
-    styles = cssStringifier.process(styles);
-
-    if (isValidPrefix(idPrefix)) {
-      prefix = idPrefix;
-    }
-
-    //replacing prefix placeholder used in all IDs with actual prefix
-    html = html.replace(/:reacttohtml_prefix:/g, prefix);
-    styles = styles.replace(/:reacttohtml_prefix:/g, prefix);
-
-    return {
-      html,
-      css: styles
-    };
-
-  }
-
-  function convertToReact({html, css}) {
-
-    html = setAttributeToRoot(html, 'data-component', DEFAULT_COMPONENT_NAME);
-
-    var components = extractReactComponents(html, {
-          componentType: 'es5',
-          moduleType: false
-        }),
-        componentKeys = Object.keys(components),
-        js = componentKeys.map(key => components[key]).join('\n')
-          + `
-ReactDOM.render(
-  <${componentKeys[0]} />,
-  document.getElementById('container')
-);`;
-
-    return {
-      html: '<div id="container"></div>',
-      js,
-      css
-    };
-
-  }
 })();
