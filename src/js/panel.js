@@ -70,8 +70,9 @@
 
       makeSnapshot(function(error, output) {
 
-        var originalHtml,
-            bugUrl = packageJson.bugs.url + '/new';
+        var bugUrl = packageJson.bugs.url + '/new',
+            errorTitle = encodeURIComponent('Error after extracting'),
+            errorBody;
 
         if (error) {
           // TODO: Errors
@@ -79,11 +80,13 @@
           return;
         }
 
-        originalHtml = output.html;
+        var {html: originalHtml, css: originalCss, url: originalUrl} = output;
 
         output = convertToReact(output);
 
-        output.js = '// Not working? Report it here: ' + bugUrl + '?body=' + encodeURIComponent(buildErrorReport(originalHtml)) + '\n\n' + output.js;
+        errorBody = encodeURIComponent(buildErrorReport(originalHtml, originalCss, originalUrl));
+
+        output.html = output.html + '\n\n<!-- Not working? Report it here: ' + bugUrl + '?title=' + errorTitle + '&body=' + errorBody + ' -->';
 
         chrome.runtime.sendMessage({
           post: buildPostData(output)
@@ -94,8 +97,26 @@
 
   }
 
-  function buildErrorReport(html) {
-    return 'Error when converting:\n\n```html\n' + html + '\n```';
+  function buildErrorReport(html, css, url) {
+    return `**Error**:
+
+\`\`\`
+<TODO: Fill in your error>
+\`\`\`
+
+**Version**: v${packageJson.version}
+
+**URL**: ${url}
+
+**Extracting**:
+
+\`\`\`html
+${html}
+\`\`\`
+
+\`\`\`css
+${css}
+\`\`\``
   }
 
   function handleInspected() {
