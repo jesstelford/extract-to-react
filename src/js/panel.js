@@ -27,7 +27,10 @@
     }
   });
 
-  linkTrigger(document.querySelector('button#jsfiddle'), function(output) {
+  // Note we give instructions to click Run because JSFiddle doesn't correctly
+  // execute the JSX post-babel transform on the first (page load) run.
+  // Subsequent runs work fine.
+  linkTrigger(document.querySelector('button#jsfiddle'), 'Click <i>Run</i> to see results', function(output) {
 
     // Code required to trigger babel conversion of JSX
     var html = output.html
@@ -62,7 +65,19 @@
   });
   */
 
-  function linkTrigger(button, buildPostData) {
+  /**
+   * @param button A DOMNode to add a click listener to
+   * @param loadingText [Optional] A string to insert inside the HTML
+   * @param buildPostData A function to construct POST data for submitting a
+   * form
+   */
+  function linkTrigger(button, loadingText, buildPostData) {
+
+    // loadingText is optional
+    if (typeof loadingText === 'function' && typeof buildPostData === 'undefined') {
+      buildPostData = loadingText;
+      loadingText = '';
+    }
 
     button.addEventListener('click', function (event) {
       event.stopPropagation();
@@ -82,7 +97,7 @@
 
         var {html: originalHtml, css: originalCss, url: originalUrl} = output;
 
-        output = convertToReact(output);
+        output = convertToReact(output, loadingText);
 
         errorBody = encodeURIComponent(buildErrorReport(originalHtml, originalCss, originalUrl));
 
