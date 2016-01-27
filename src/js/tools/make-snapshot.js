@@ -4,23 +4,32 @@ var Snapshooter = require('./Snapshooter'),
 
 module.exports = function makeSnapshot(callback) {
 
-  inspectedContext.eval("(" + Snapshooter.toString() + ")($0)", function (result) {
+  function processSnapshot(url, result) {
 
-    inspectedContext.eval('window.location.href', url => {
+    var snapshot;
 
-      var snapshot;
+    try {
+      snapshot = JSON.parse(result);
+      snapshot = extractHtmlCss(snapshot);
+      snapshot.url = url;
+      return callback(null, snapshot);
+    } catch (e) {
+      return callback(e);
+    }
 
-      try {
-        snapshot = JSON.parse(result);
-        snapshot = extractHtmlCss(snapshot);
-        snapshot.url = url;
-        return callback(null, snapshot);
-      } catch (e) {
-        return callback(e);
-      }
+  }
 
-    });
+  inspectedContext.eval("(" + Snapshooter.toString() + ")($0)", function (inspectedUrl, result) {
+
+    if (inspectedUrl) {
+      processSnapshot(inspectedUrl, result);
+    } else {
+
+      inspectedContext.eval('window.location.href', (_, windowUrl) => {
+        processSnapshot(windowUrl, result);
+      });
+
+    }
 
   });
 }
-

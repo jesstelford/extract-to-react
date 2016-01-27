@@ -61,7 +61,7 @@ module.exports = function InspectedContext() {
     findTargetFrameURL(function (url) {
       var settings = url ? {frameURL: url} : {};
 
-      chrome.devtools.inspectedWindow.eval(code, settings, callback);
+      chrome.devtools.inspectedWindow.eval(code, settings, callback.bind(null, url));
     });
   };
 }
