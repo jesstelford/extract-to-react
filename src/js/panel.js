@@ -86,7 +86,7 @@
 
         errorBody = encodeURIComponent(buildErrorReport(originalHtml, originalCss, originalUrl));
 
-        output.html = output.html + '\n\n<!-- Not working? Report it here: ' + bugUrl + '?title=' + errorTitle + '&body=' + errorBody + ' -->';
+        output.html = output.html + '\n\n' + generateBugButton(bugUrl + '?title=' + errorTitle + '&body=' + errorBody);
 
         chrome.runtime.sendMessage({
           post: buildPostData(output)
@@ -97,8 +97,14 @@
 
   }
 
-  function buildErrorReport(html, css, url) {
-    return `**Error**:
+  // Progressively build the error report, keeping it under the `maxLength`
+  function buildErrorReport(html, css, url, maxLength = 2000) {
+
+    var htmlOut,
+        cssOut,
+        error;
+
+    error = `**Error**:
 
 \`\`\`
 <TODO: Fill in your error>
@@ -106,17 +112,39 @@
 
 **Version**: v${packageJson.version}
 
-**URL**: ${url}
+**URL**: ${url}`;
+
+    htmlOut = `
 
 **Extracting**:
 
 \`\`\`html
 ${html}
-\`\`\`
+\`\`\``;
 
+    if (error.length + htmlOut.length > maxLength) {
+      return error;
+    } else {
+      error = error + htmlOut;
+    }
+
+    cssOut = `
 \`\`\`css
 ${css}
-\`\`\``
+\`\`\``;
+
+    if (error.length + cssOut.length > maxLength) {
+      return error;
+    } else {
+      error = error + cssOut
+    }
+
+    return error;
+  }
+
+  function generateBugButton(url) {
+    // TODO: global regex to replace ' with \' in the url string
+    return '<button type="button" onclick="window.open(\'' + url.replace(/'/g, "\\'") + '\', \'_blank\')" style="position:absolute; right: 20px; bottom: 20px;">Not working?</button>';
   }
 
   function handleInspected() {
