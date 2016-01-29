@@ -1,5 +1,7 @@
 # Extract to React Chrome DevTools Plugin
 
+[![bitHound Dependencies](https://www.bithound.io/github/jesstelford/extract-to-react/badges/dependencies.svg)](https://www.bithound.io/github/jesstelford/extract-to-react/master/dependencies/npm)
+
 Chrome/Chromium extension for easy HTML to React conversion.
 
 ![Screenshot](TODO)
