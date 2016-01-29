@@ -1,5 +1,6 @@
 * Panel UI
   * Be able to highlight the inspected element in the browser window
+  * Dogfood to build a better UI
 * Error output
 * Don't require uploading
 * Inline the styles:
@@ -14,3 +15,5 @@
     * Alternatively; Keep the separately generated stylesheets
 * Ability to extract multiple nested components
   * Ask user to add the appropriate `data-` attribute on the elements?
+* Google Analytics?
+* Package it up for publishing
