@@ -164,15 +164,28 @@ ${css}
 
   function handleInspected() {
 
+    var buttons = Array.prototype.slice.call(document.querySelectorAll('.extract-button')),
+        messageEl = document.querySelector('#inspected');
+
+    messageEl.innerHTML = '<i>loading...</i>';
+    buttons.forEach(button => {
+      button.setAttribute('disabled', 'disabled');
+    });
+
     makeSnapshot(function(error, output) {
 
       if (error) {
         // TODO: Errors
-        chrome.runtime.sendMessage({type: 'error', message: error});
-        return;
-      }
+        chrome.runtime.sendMessage({type: 'error', message: error.toString() + '\n' + error.stack});
+        messageEl.innerHTML = '<i>none</i>';
+      } else {
 
-      showInspectedHtml(output.html);
+        buttons.forEach(button => {
+          button.removeAttribute('disabled', 'disabled');
+        });
+
+        showInspectedHtml(output.html);
+      }
 
     });
   }
