@@ -3,12 +3,16 @@
 
   window.handleInspected = handleInspected;
 
+
   var he = require('he'),
+      ga = require('./analytics'),
       packageJson = require('../../package.json'),
       makeSnapshot = require('./tools/make-snapshot'),
       convertToReact = require('./tools/convert-to-react'),
       prettyPrintHtml = require('./tools/pretty-print-html'),
       htmlStringToNodesArray = require('./tools/html-string-to-nodes');
+
+  ga('send', 'pageview', '/panel.html');
 
   //Event listeners
   linkTrigger(document.querySelector('button#codepen'), function(output) {
