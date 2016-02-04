@@ -3,7 +3,7 @@
   "description": "Chrome/Chromium extension that allows easy HTML to React conversion.",
   "version": "0.5",
   "manifest_version": 2,
-  "minimum_chrome_version": "18.0",
+  "minimum_chrome_version": "39.0",
   "icons": {
     "24": "gfx/icon_24.png",
     "128": "gfx/icon_128.png"
