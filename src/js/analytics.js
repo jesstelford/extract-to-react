@@ -18,21 +18,19 @@ if (process.env.NODE_ENV === 'production') {
 
   loadGA(whereAmI,document,'script','https://www.google-analytics.com/analytics.js',gaFuncName);
 
-  ga = whereAmI[gaFuncName];
-
-  ga('create', process.env.GA_TRACKING_ID, 'auto');
+  whereAmI[gaFuncName]('create', process.env.GA_TRACKING_ID, 'auto');
 
   // Allows sending click events even when the page is being unloaded. @see: https://developers.google.com/analytics/devguides/collection/analyticsjs/sending-hits#specifying_different_transport_mechanisms
-  ga('set', 'transport', 'beacon');
+  whereAmI[gaFuncName]('set', 'transport', 'beacon');
 
   // Removes failing protocol check. @see: http://stackoverflow.com/a/22152353/1958200
-  ga('set', 'checkProtocolTask', function(){});
+  whereAmI[gaFuncName]('set', 'checkProtocolTask', function(){});
 
-  ga('set', 'appId', packageJson.name);
-  ga('set', 'appVersion', packageJson.version);
+  whereAmI[gaFuncName]('set', 'appId', packageJson.name);
+  whereAmI[gaFuncName]('set', 'appVersion', packageJson.version);
 
-  ga('set', 'forceSSL', true);
-  ga('set', 'dataSource', 'extension');
+  whereAmI[gaFuncName]('set', 'forceSSL', true);
+  whereAmI[gaFuncName]('set', 'dataSource', 'extension');
 
   // Usage:
   /* whereAmI[gaFuncName]('send', 'pageview', '/options.html'); */
