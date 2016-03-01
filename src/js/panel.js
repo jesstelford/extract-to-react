@@ -109,6 +109,8 @@ function linkTrigger(name, button, loadingText, buildPostData) {
 
   button.addEventListener('click', function (event) {
 
+    var startTime;
+
     ga(
       'send',
       'event',
@@ -120,7 +122,22 @@ function linkTrigger(name, button, loadingText, buildPostData) {
       }
     );
 
+    startTime = performance.now();
+
     makeSnapshot(function(error, output) {
+
+      var processingTime = Math.round(performance.now() - startTime);
+
+      ga(
+        'send',
+        'timing',
+        {
+          'timingCategory': 'processing',
+          'timingVar': 'extracting-complete',
+          'timingValue': processingTime,
+          'timingLabel': 'Extracting DOM Complete'
+        }
+      );
 
       var bugUrl = packageJson.bugs.url + '/new',
           errorTitle = encodeURIComponent('Error after extracting'),
@@ -134,7 +151,22 @@ function linkTrigger(name, button, loadingText, buildPostData) {
 
       var {html: originalHtml, css: originalCss, url: originalUrl} = output;
 
+      startTime = performance.now();
+
       output = convertToReact(output, loadingText);
+
+      processingTime = Math.round(performance.now() - startTime);
+
+      ga(
+        'send',
+        'timing',
+        {
+          'timingCategory': 'processing',
+          'timingVar': 'convert-to-react-complete',
+          'timingValue': processingTime,
+          'timingLabel': 'Convert To React Complete'
+        }
+      );
 
       errorBody = encodeURIComponent(buildErrorReport(originalHtml, originalCss, originalUrl));
 
