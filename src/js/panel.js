@@ -1,5 +1,3 @@
-window.handleInspected = _ => {}
-
 var he = require('he'),
     ga = require('./analytics'),
     packageJson = require('../../package.json'),
@@ -9,6 +7,35 @@ var he = require('he'),
     htmlStringToNodesArray = require('./tools/html-string-to-nodes');
 
 ga('send', 'pageview', '/panel.html');
+
+// export this function for use in the devtools initialization script
+window.handleInspected = _ => {
+
+  var buttons = Array.prototype.slice.call(document.querySelectorAll('.extract-button')),
+      messageEl = document.querySelector('#inspected');
+
+  messageEl.innerHTML = '<i>loading...</i>';
+  buttons.forEach(button => {
+    button.setAttribute('disabled', 'disabled');
+  });
+
+  makeSnapshot(function(error, output) {
+
+    if (error) {
+      // TODO: Errors
+      chrome.runtime.sendMessage({type: 'error', message: error.toString() + '\n' + error.stack});
+      messageEl.innerHTML = '<i>none</i>';
+    } else {
+
+      buttons.forEach(button => {
+        button.removeAttribute('disabled', 'disabled');
+      });
+
+      showInspectedHtml(output.html);
+    }
+
+  });
+}
 
 //Event listeners
 linkTrigger('codepen', document.querySelector('button#codepen'), function(output) {
@@ -173,34 +200,6 @@ ${css}
 function generateBugButton(url) {
   // TODO: global regex to replace ' with \' in the url string
   return '<button type="button" onclick="window.open(\'' + url.replace(/'/g, "\\'") + '\', \'_blank\')" style="position:absolute; right: 20px; bottom: 20px;">Not working?</button>';
-}
-
-function handleInspected() {
-
-  var buttons = Array.prototype.slice.call(document.querySelectorAll('.extract-button')),
-      messageEl = document.querySelector('#inspected');
-
-  messageEl.innerHTML = '<i>loading...</i>';
-  buttons.forEach(button => {
-    button.setAttribute('disabled', 'disabled');
-  });
-
-  makeSnapshot(function(error, output) {
-
-    if (error) {
-      // TODO: Errors
-      chrome.runtime.sendMessage({type: 'error', message: error.toString() + '\n' + error.stack});
-      messageEl.innerHTML = '<i>none</i>';
-    } else {
-
-      buttons.forEach(button => {
-        button.removeAttribute('disabled', 'disabled');
-      });
-
-      showInspectedHtml(output.html);
-    }
-
-  });
 }
 
 function showInspectedHtml(html) {
