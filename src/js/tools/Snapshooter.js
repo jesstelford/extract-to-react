@@ -214,6 +214,17 @@ module.exports = function Snapshooter(root) {
     parent,
     clone;
 
+    if (root.nodeName === 'BODY') {
+      return JSON.stringify({
+        html: '',
+        leadingAncestorHtml: '',
+        trailingAncestorHtml: '',
+        css: '',
+        ancestorCss: ''
+      });
+    }
+
+
     descendants = root.getElementsByTagName('*');
 
     parent = root.parentElement;
