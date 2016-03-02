@@ -22,6 +22,7 @@ module.exports = function convertToReact({html, css}, innerHTML = '', defaultCom
       componentKeys = Object.keys(components),
       js = componentKeys.map(key => components[key]).join('\n')
         + `
+
 ReactDOM.render(
 <${componentKeys[0]} />,
 document.getElementById('container')
