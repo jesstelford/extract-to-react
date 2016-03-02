@@ -28,8 +28,19 @@ window.handleInspected = _ => {
     // TODO: Only if output.html !== ''
 
     if (error) {
-      chrome.runtime.sendMessage({type: 'error', message: error.toString() + '\n' + error.stack});
+      let errorMessage = error.toString() + '\n' + error.stack;
+      chrome.runtime.sendMessage({type: 'error', message: errorMessage});
       messageEl.innerHTML = '<i>none</i>';
+
+      ga(
+        'send',
+        'exception',
+        {
+          'exDescription': errorMessage,
+          'exFatal': false
+        }
+      );
+
       return;
     }
 
@@ -154,8 +165,18 @@ function linkTrigger(name, button, loadingText, buildPostData) {
           errorBody;
 
       if (error) {
-        // TODO: Errors
-        chrome.runtime.sendMessage({type: 'error', message: error.toString() + '\n' + error.stack});
+        let errorMessage = error.toString() + '\n' + error.stack;
+        chrome.runtime.sendMessage({type: 'error', message: errorMessage});
+
+        ga(
+          'send',
+          'exception',
+          {
+            'exDescription': errorMessage,
+            'exFatal': false
+          }
+        );
+
         return;
       }
 
