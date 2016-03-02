@@ -27,6 +27,12 @@ window.handleInspected = _ => {
     var processingTime = Math.round(performance.now() - startTime);
     // TODO: Only if output.html !== ''
 
+    if (error) {
+      chrome.runtime.sendMessage({type: 'error', message: error.toString() + '\n' + error.stack});
+      messageEl.innerHTML = '<i>none</i>';
+      return;
+    }
+
     if (output.html === '') {
       ga('set', ga.dimensions['No Inspected Element'], 'true');
     }
@@ -42,18 +48,12 @@ window.handleInspected = _ => {
       }
     );
 
-    if (error) {
-      // TODO: Errors
-      chrome.runtime.sendMessage({type: 'error', message: error.toString() + '\n' + error.stack});
-      messageEl.innerHTML = '<i>none</i>';
-    } else {
 
-      buttons.forEach(button => {
-        button.removeAttribute('disabled', 'disabled');
-      });
+    buttons.forEach(button => {
+      button.removeAttribute('disabled', 'disabled');
+    });
 
-      showInspectedHtml(output.html);
-    }
+    showInspectedHtml(output.html);
 
   });
 }
@@ -149,6 +149,16 @@ function linkTrigger(name, button, loadingText, buildPostData) {
 
       var processingTime = Math.round(performance.now() - startTime);
 
+      var bugUrl = packageJson.bugs.url + '/new',
+          errorTitle = encodeURIComponent('Error after extracting'),
+          errorBody;
+
+      if (error) {
+        // TODO: Errors
+        chrome.runtime.sendMessage({type: 'error', message: error.toString() + '\n' + error.stack});
+        return;
+      }
+
       ga(
         'send',
         'timing',
@@ -159,16 +169,6 @@ function linkTrigger(name, button, loadingText, buildPostData) {
           'timingLabel': 'Extracting DOM Complete'
         }
       );
-
-      var bugUrl = packageJson.bugs.url + '/new',
-          errorTitle = encodeURIComponent('Error after extracting'),
-          errorBody;
-
-      if (error) {
-        // TODO: Errors
-        chrome.runtime.sendMessage({type: 'error', message: error.toString() + '\n' + error.stack});
-        return;
-      }
 
       var {html: originalHtml, css: originalCss, url: originalUrl} = output;
 
