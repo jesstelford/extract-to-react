@@ -12,14 +12,35 @@ ga('send', 'pageview', '/panel.html');
 window.handleInspected = _ => {
 
   var buttons = Array.prototype.slice.call(document.querySelectorAll('.extract-button')),
-      messageEl = document.querySelector('#inspected');
+      messageEl = document.querySelector('#inspected'),
+      startTime;
 
   messageEl.innerHTML = '<i>loading...</i>';
   buttons.forEach(button => {
     button.setAttribute('disabled', 'disabled');
   });
 
+  startTime = performance.now();
+
   makeSnapshot(function(error, output) {
+
+    var processingTime = Math.round(performance.now() - startTime);
+    // TODO: Only if output.html !== ''
+
+    if (output.html === '') {
+      ga('set', ga.dimensions['No Inspected Element'], 'true');
+    }
+
+    ga(
+      'send',
+      'timing',
+      {
+        'timingCategory': 'processing',
+        'timingVar': 'extracting-complete',
+        'timingValue': processingTime,
+        'timingLabel': 'Extracting DOM Complete'
+      }
+    );
 
     if (error) {
       // TODO: Errors

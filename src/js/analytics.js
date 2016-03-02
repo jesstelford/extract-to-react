@@ -3,7 +3,10 @@ var packageJson = require('../../package.json');
 var whereAmI = window || global,
     gaFuncName = 'ga',
     ga,
-    backoffTimeout = 4;
+    backoffTimeout = 4,
+    dimensions = {
+      'No Inspected Element': 'dimension1'
+    };
 
 if (process.env.NODE_ENV === 'production') {
 
@@ -40,4 +43,8 @@ if (process.env.NODE_ENV === 'production') {
   }
 }
 
-module.exports = whereAmI[gaFuncName];
+module.exports = function() {
+  whereAmI[gaFuncName].apply(whereAmI, arguments);
+}
+
+module.exports.dimensions = dimensions;
