@@ -1,9 +1,11 @@
 var he = require('he'),
     ga = require('./analytics'),
+    throttle = require('lodash/throttle'),
     packageJson = require('../../package.json'),
     makeSnapshot = require('./tools/make-snapshot'),
     convertToReact = require('./tools/convert-to-react'),
     prettyPrintHtml = require('./tools/pretty-print-html'),
+    elementBottomVisible = require('./tools/element-bottom-visible'),
     htmlStringToNodesArray = require('./tools/html-string-to-nodes');
 
 ga('send', 'pageview', '/panel.html');
@@ -123,6 +125,31 @@ linkTrigger('jsbin', document.querySelector('button#jsbin'), function(output) {
   }
 });
 */
+
+var visibilityListener = throttle(advancedUsageFullyVisible, 100);
+
+window.addEventListener('scroll', visibilityListener);
+window.addEventListener('resize', visibilityListener);
+
+function advancedUsageFullyVisible() {
+
+  if (!elementBottomVisible(document.getElementById('advanced-usage'))) {
+    return;
+  }
+
+  window.removeEventListener('scroll', visibilityListener);
+  window.removeEventListener('resize', visibilityListener);
+  visibilityListener.cancel();
+
+  ga(
+    'send',
+    'event',
+    'advanced-usage',
+    'visible',
+    'UI'
+  );
+
+}
 
 /**
  * @param name String name to send to GA
