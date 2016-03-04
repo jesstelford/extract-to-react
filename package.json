@@ -7,7 +7,7 @@
     "build": "npm run build-prep && npm run build-static && npm run build-js",
     "build-prod": "npm run build-prep && npm run build-static && npm run build-js-prod",
     "build-prep": "mkdir -p lib/js",
-    "build-gfx": "(cd src; tar -cf - $(find ./gfx -name \"*.png\")) | tar -C lib -xf -",
+    "build-gfx": "(cd src; tar -cf - $(find ./gfx -name \"*.png\")) | tar -C lib -xf - && (cp src/gfx/icon_128.png lib/ || true)",
     "build-css": "(cd src; tar -cf - $(find ./css -name \"*.css\")) | tar -C lib -xf -",
     "build-html": "(cd src; tar -cf - $(find ./html -name \"*.html\")) | tar -C lib -xf - && cp src/devtools.html lib/devtools.html",
     "build-manifest": "cp src/manifest.json lib/",
