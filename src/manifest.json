@@ -1,7 +1,7 @@
 {
   "name": "Extract to React",
   "description": "Chrome/Chromium extension that allows easy HTML to React conversion.",
-  "version": "0.5",
+  "version": "<auto-filled from package.json>",
   "manifest_version": 2,
   "minimum_chrome_version": "39.0",
   "icons": {

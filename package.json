@@ -10,7 +10,7 @@
     "build-gfx": "(cd src; tar -cf - $(find ./gfx -name \"*.png\")) | tar -C lib -xf - && (cp src/gfx/icon_128.png lib/ || true)",
     "build-css": "(cd src; tar -cf - $(find ./css -name \"*.css\")) | tar -C lib -xf -",
     "build-html": "(cd src; tar -cf - $(find ./html -name \"*.html\")) | tar -C lib -xf - && cp src/devtools.html lib/devtools.html",
-    "build-manifest": "cp src/manifest.json lib/",
+    "build-manifest": "node -e \"var manifest = require('./src/manifest.json'); manifest.version = require('./package.json').version; console.log(JSON.stringify(manifest, null, 2));\" > lib/manifest.json",
     "build-static": "npm run build-gfx && npm run build-css && npm run build-html && npm run build-manifest",
     "build-js": "find ./src/js -maxdepth 1 -name '*.js' -exec bash -c 'browserify \"$0\" -t [ babelify --presets [ es2015 ] ] -g [ envify --NO_WRITE_FS --NODE_ENV=\"development\" ] -g uglifyify -o \"${0/src/lib}\"' {} \\;",
     "build-js-prod": "find ./src/js -maxdepth 1 -name '*.js' -exec bash -c 'browserify \"$0\" -t [ babelify --presets [ es2015 ] ] -g [ envify --NO_WRITE_FS --GA_TRACKING_ID=\"UA-73151166-1\" --NODE_ENV=\"production\" ] -g uglifyify | uglifyjs -cm --screw-ie8 -o \"${0/src/lib}\"' {} \\;"
