@@ -4,15 +4,45 @@
 
 Chrome/Chromium extension for easy HTML to React conversion.
 
-![Screenshot](TODO)
+![Usage](screenshots/usage.gif)
+
+Extract all the HTML & CSS of any portion of any website directly into a
+ready-to-go React Component!
 
 ## Installation
 
-~~You may install this extension from its google chrome webstore page~~
+Grab it from Google: [Extract to React](https://chrome.google.com/webstore/detail/extract-to-react/fbdmadiknkkdfcgjdbmddklighibfomm?hl=en-US&gl=AU)
 
-[TODO](TODO)
+## Usage
 
-### Building From Source
+### Quick start
+
+Inspect an element on the page > "Extract To React" tab > Extract the code to
+CodePen or JSFiddle.
+
+### Advanced usage
+
+It is possible to split a monolithic component up into multiple nested
+components.
+
+Find the elements you wish to become their own component in the "Elements" tab.
+Add an attribute called `data-component`.  Set the value of `data-component` to
+be the extracted name of the component:
+
+```html
+<h1 class="heading" data-component="Heading">Hello, world!</h1>
+
+<nav class="nav" data-component="Nav">
+  <ul class="list">
+    <li class="list-item" data-component="ListItem">#1</li>
+    <li class="list-item" data-component="ListItem">#2</li>
+  </ul>
+</nav>
+```
+        
+Will result in 3 components being extracted: `Heading`, `Nav`, and `ListItem`
+
+## Building From Source
 
 ```bash
 git clone https://github.com/jesstelford/extract-to-react.git
@@ -23,12 +53,6 @@ npm run build
 
 Now load as an `Unpacked extension` via chrome extensions page. Point to the
 `extract-to-react/lib` folder for the compiled extension.
-
-## Usage
-
-Open Developer Tools, you should see the new Extract To React tab. Inspect an
-element on the page and switch to the new tab, you will see options for settings
-and exporting the code for the element you selected.
 
 # Bugs and Features
 
