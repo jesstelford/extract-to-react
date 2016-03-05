@@ -5,7 +5,8 @@
   "main": "",
   "scripts": {
     "build": "npm run build-prep && npm run build-static && npm run build-js",
-    "build-prod": "npm run build-prep && npm run build-static && npm run build-js-prod",
+    "build-prod": "npm run build-prep && npm run build-static && npm run build-js-prod && npm run build-zip",
+    "build-zip": "(cd lib; zip -r ../`node -e \"var pJson = require('../package.json'); console.log(pJson.name + '-' + pJson.version)\"`.zip ./*)",
     "build-prep": "mkdir -p lib/js",
     "build-gfx": "(cd src; tar -cf - $(find ./gfx -name \"*.png\")) | tar -C lib -xf - && (cp src/gfx/icon_128.png lib/ || true)",
     "build-css": "(cd src; tar -cf - $(find ./css -name \"*.css\")) | tar -C lib -xf -",
