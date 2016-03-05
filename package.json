@@ -1,6 +1,6 @@
 {
   "name": "extract-to-react",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Chrome/Chromium extension for easy HTML to React conversion.",
   "main": "",
   "scripts": {
