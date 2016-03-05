@@ -1,5 +1,9 @@
+import Panel from './components/panel';
+
 var he = require('he'),
     ga = require('./analytics'),
+    React = require('react'),
+    ReactDOM = require('react-dom'),
     throttle = require('lodash/throttle'),
     packageJson = require('../../package.json'),
     makeSnapshot = require('./tools/make-snapshot'),
@@ -7,6 +11,11 @@ var he = require('he'),
     prettyPrintHtml = require('./tools/pretty-print-html'),
     elementBottomVisible = require('./tools/element-bottom-visible'),
     htmlStringToNodesArray = require('./tools/html-string-to-nodes');
+
+ReactDOM.render(
+  <Panel />,
+  document.querySelector('.panel-component')
+);
 
 ga('send', 'pageview', '/panel.html');
 
