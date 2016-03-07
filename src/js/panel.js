@@ -39,7 +39,16 @@ window.handleInspected = _ => {
     // TODO: Only if output.html !== ''
 
     if (error) {
-      let errorMessage = error.toString() + '\n' + error.stack;
+      let errorMessage;
+
+      if (error instanceof Error) {
+        errorMessage = error.toString() + '\n' + error.stack;
+      } else if (Object.prototype.toString.call(error) === '[object Object]') {
+        errorMessage = JSON.stringify(error);
+      } else {
+        errorMessage = error.toString();
+      }
+
       chrome.runtime.sendMessage({type: 'error', message: errorMessage});
       messageEl.innerHTML = '<i>none</i>';
 

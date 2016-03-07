@@ -4,9 +4,13 @@ var Snapshooter = require('./Snapshooter'),
 
 module.exports = function makeSnapshot(callback) {
 
-  function processSnapshot(url, result) {
+  function processSnapshot(url, result, exception) {
 
     var snapshot;
+
+    if (exception) {
+      return callback(exception);
+    }
 
     try {
       snapshot = JSON.parse(result);
@@ -14,7 +18,7 @@ module.exports = function makeSnapshot(callback) {
       snapshot.url = url;
       return callback(null, snapshot);
     } catch (e) {
-      return callback(e);
+      return callback(new Error('Snapshot failed: ' + (result ? result.toString() : 'Unable to create snapshot')));
     }
 
   }
