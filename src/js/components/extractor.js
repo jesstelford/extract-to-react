@@ -9,6 +9,9 @@ var ga = require('../analytics'),
     makeSnapshot = require('../tools/make-snapshot'),
     convertToReact = require('../tools/convert-to-react');
 
+const bugUrl = packageJson.bugs.url + '/new';
+const errorTitle = encodeURIComponent('Error after extracting');
+
 /**
  * @param name String name to send to GA
  * @param button A DOMNode to add a click listener to
@@ -16,9 +19,11 @@ var ga = require('../analytics'),
  * @param buildPostData A function to construct POST data for submitting a
  * form
  */
-function linkTrigger(name, loadingText, buildPostData) {
+function linkTrigger(inspected, name, loadingText, buildPostData) {
 
-  var startTime;
+  var startTime,
+      processingTime,
+      errorBody;
 
   // loadingText is optional
   if (typeof loadingText === 'function' && typeof buildPostData === 'undefined') {
@@ -37,70 +42,31 @@ function linkTrigger(name, loadingText, buildPostData) {
     }
   );
 
+  var {html: originalHtml, css: originalCss, url: originalUrl} = inspected;
+
   startTime = performance.now();
 
-  makeSnapshot(function(error, output) {
+  inspected = convertToReact(inspected, loadingText);
 
-    var processingTime = Math.round(performance.now() - startTime);
+  processingTime = Math.round(performance.now() - startTime);
 
-    var bugUrl = packageJson.bugs.url + '/new',
-        errorTitle = encodeURIComponent('Error after extracting'),
-        errorBody;
-
-    if (error) {
-      let errorMessage = error.toString() + '\n' + error.stack;
-      chrome.runtime.sendMessage({type: 'error', message: errorMessage});
-
-      ga(
-        'send',
-        'exception',
-        {
-          'exDescription': errorMessage,
-          'exFatal': false
-        }
-      );
-
-      return;
+  ga(
+    'send',
+    'timing',
+    {
+      'timingCategory': 'processing',
+      'timingVar': 'convert-to-react-complete',
+      'timingValue': processingTime,
+      'timingLabel': 'Convert To React Complete'
     }
+  );
 
-    ga(
-      'send',
-      'timing',
-      {
-        'timingCategory': 'processing',
-        'timingVar': 'extracting-complete',
-        'timingValue': processingTime,
-        'timingLabel': 'Extracting DOM Complete'
-      }
-    );
+  errorBody = encodeURIComponent(buildErrorReport(originalHtml, originalCss, originalUrl));
 
-    var {html: originalHtml, css: originalCss, url: originalUrl} = output;
+  inspected.html = inspected.html + '\n\n' + generateBugButton(bugUrl + '?title=' + errorTitle + '&body=' + errorBody);
 
-    startTime = performance.now();
-
-    output = convertToReact(output, loadingText);
-
-    processingTime = Math.round(performance.now() - startTime);
-
-    ga(
-      'send',
-      'timing',
-      {
-        'timingCategory': 'processing',
-        'timingVar': 'convert-to-react-complete',
-        'timingValue': processingTime,
-        'timingLabel': 'Convert To React Complete'
-      }
-    );
-
-    errorBody = encodeURIComponent(buildErrorReport(originalHtml, originalCss, originalUrl));
-
-    output.html = output.html + '\n\n' + generateBugButton(bugUrl + '?title=' + errorTitle + '&body=' + errorBody);
-
-    chrome.runtime.sendMessage({
-      post: buildPostData(output)
-    });
-
+  chrome.runtime.sendMessage({
+    post: buildPostData(inspected)
   });
 
 }
@@ -195,7 +161,7 @@ let Extractor = React.createClass({
     event.stopPropagation();
     event.preventDefault();
 
-    linkTrigger('codepen', function(output) {
+    linkTrigger(this.props.inspected, 'codepen', function(output) {
 
       return {
         url: 'http://codepen.io/pen/define',
