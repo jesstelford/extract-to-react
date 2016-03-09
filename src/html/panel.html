@@ -12,57 +12,7 @@
 
   <div class="container">
     <h1>Extract To React</h1>
-    <p>
-      Inspected Element: <span id='inspected'><i>none</i></span>
-    </p>
-    <p>Generate and upload to...</p>
-    <button id="codepen" class="extract-button">Codepen</button>
-    <button id="jsfiddle" class="extract-button">JSFiddle</button>
-    <section id="usage">
-      <h2>Usage</h2>
-      <h3>Selecting what to extract</h3>
-      <p>Inspect an element on the page, then re-visit this tab.</p>
-      <p>To inspect an element;
-      <ul>
-        <li>Right click > Inspect Element, or;</li>
-        <li>Open "Elements" panel > Click an element, or;</li>
-        <li>Click the magnifying glass, then select an element on the page</li>
-      </ul>
-    </section>
-    <section id='advanced-usage'>
-      <h2>Advanced Usage</h2>
-      <h3>Extracting multiple nested components</h3>
-      <p>Ordinarily, only a single component is extracted. It is possible to split this monolithic component up into multiple nested components:</p>
-      <ul>
-        <li>Find the elements you wish to become their own component in the "Elements" tab</li>
-        <li>Add an attribute called <code>data-component</code>.
-        <li>Set the value of <code>data-component</code> to be the name of the component.</li>
-      </ul>
-      <p>For example:
-        <pre><code>
-&#x3C;h1 class=&#x22;heading&#x22; data-component=&#x22;Heading&#x22;&#x3E;Hello, world!&#x3C;/h1&#x3E;
-
-&#x3C;nav class=&#x22;nav&#x22; data-component=&#x22;Nav&#x22;&#x3E;
-  &#x3C;ul class=&#x22;list&#x22;&#x3E;
-    &#x3C;li class=&#x22;list-item&#x22; data-component=&#x22;ListItem&#x22;&#x3E;#1&#x3C;/li&#x3E;
-    &#x3C;li class=&#x22;list-item&#x22; data-component=&#x22;ListItem&#x22;&#x3E;#2&#x3C;/li&#x3E;
-  &#x3C;/ul&#x3E;
-&#x3C;/nav&#x3E;
-        </code></pre>
-        Will result in 3 components being extracted: <code>Heading</code>, <code>Nav</code>, and <code>ListItem</code>
-      </p>
-    </section>
-    <hr />
-    <section>
-      <p>Created by <a href="http://github.com/jesstelford" target="_blank">Jess Telford</a> | <a href="https://github.com/jesstelford/extract-to-react" target="_blank">Homepage</a></p>
-      <p>
-        Built on the shoulders of giants:
-        <ul>
-          <li><a href="https://github.com/roman01la/html-to-react-components" target="_blank"><code>html-to-react-components</code></a> by <a href="https://github.com/roman01la" target="_blank">Roman Liutikov</a></li>
-          <li><a href="https://github.com/kdzwinel/SnappySnippet" target="_blank">SnappySnippet</a> by <a href="https://github.com/kdzwinel" target="_blank">Konrad Dzwinel</a></li>
-        </ul>
-      </p>
-    </section>
+    <div class="panel-component"></div>
   </div>
 
   <script src='../js/panel.js'></script>
