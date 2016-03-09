@@ -28,7 +28,6 @@
   "homepage": "",
   "dependencies": {
     "babelify": "^7.2.0",
-    "he": "^0.5.0",
     "html-to-react-components": "github:roman01la/html-to-react-components#c65387c3ef9b9a973ca6ab7800c6302d302038e1",
     "lodash": "^4.6.1",
     "react": "^0.14.7",

@@ -11,8 +11,8 @@ export default function AdvancedUsage() {
         <li>Add an attribute called <code>data-component</code>.</li>
         <li>Set the value of <code>data-component</code> to be the name of the component.</li>
       </ul>
-      <p>For example:
-        <pre><code>
+      <p>For example:</p>
+      <pre><code>
     &#x3C;h1 class=&#x22;heading&#x22; data-component=&#x22;Heading&#x22;&#x3E;Hello, world!&#x3C;/h1&#x3E;
 
     &#x3C;nav class=&#x22;nav&#x22; data-component=&#x22;Nav&#x22;&#x3E;
@@ -21,8 +21,8 @@ export default function AdvancedUsage() {
         &#x3C;li class=&#x22;list-item&#x22; data-component=&#x22;ListItem&#x22;&#x3E;#2&#x3C;/li&#x3E;
       &#x3C;/ul&#x3E;
     &#x3C;/nav&#x3E;
-        </code></pre>
-        Will result in 3 components being extracted: <code>Heading</code>, <code>Nav</code>, and <code>ListItem</code>
+      </code></pre>
+      <p>Will result in 3 components being extracted: <code>Heading</code>, <code>Nav</code>, and <code>ListItem</code>
       </p>
     </section>
   );
