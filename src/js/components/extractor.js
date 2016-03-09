@@ -213,35 +213,6 @@ let Extractor = React.createClass({
 
   },
 
-  handleJsfiddle() {
-    event.stopPropagation();
-    event.preventDefault();
-
-    // Note we give instructions to click Run because JSFiddle doesn't correctly
-    // execute the JSX post-babel transform on the first (page load) run.
-    // Subsequent runs work fine.
-    linkTrigger('jsfiddle', 'Click <i>Run</i> to see results', function(output) {
-
-      // Code required to trigger babel conversion of JSX
-      var html = output.html
-        + '\n\n'
-        + '<!-- Trigger babel conversion of JSX -->\n'
-        + '<script>document.querySelector(\'script[type="application/javascript;version=1.7"]\').setAttribute(\'type\', \'text/babel\');</script>';
-
-      return {
-        url: 'http://jsfiddle.net/api/post/library/pure/',
-        data: {
-          html: html,
-          css: output.css,
-          js: output.js,
-          resources: 'https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.js,https://cdnjs.cloudflare.com/ajax/libs/react/0.14.6/react.min.js,https://cdnjs.cloudflare.com/ajax/libs/react/0.14.6/react-dom.min.js',
-          wrap: 'h',// No wrap, in the head
-          panel_js: 2 // version 1.7
-        }
-      }
-    });
-  },
-
   render() {
 
     let inspectedContent = this.state.prettyInspected,
@@ -262,7 +233,6 @@ let Extractor = React.createClass({
         </pre>
         <p>Generate and upload to...</p>
         <button {...buttonProps} onClick={this.handleCodepen}>Codepen</button>
-        <button {...buttonProps} onClick={this.handleJsfiddle}>JSFiddle</button>
       </div>
     );
   }
