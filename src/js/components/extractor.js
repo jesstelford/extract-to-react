@@ -129,7 +129,8 @@ let Extractor = React.createClass({
       url: React.PropTypes.string,
       html: React.PropTypes.string,
       css: React.PropTypes.string
-    }).isRequired
+    }).isRequired,
+    isLoading: React.PropTypes.bool
   },
 
   prepareForRender(html) {
@@ -186,7 +187,11 @@ let Extractor = React.createClass({
 
     if (!this.state.hasInspected) {
       buttonProps.disabled = true;
-      inspectedContent = <i>none</i>;
+      if (this.props.isLoading) {
+        inspectedContent = <i>Loading...</i>;
+      } else {
+        inspectedContent = <i>none</i>;
+      }
     }
 
     return (
