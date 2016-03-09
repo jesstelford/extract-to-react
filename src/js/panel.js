@@ -11,7 +11,7 @@ var he = require('he'),
     htmlStringToNodesArray = require('./tools/html-string-to-nodes');
 
 ReactDOM.render(
-  <Panel />,
+  <Panel isLoading={true} />,
   document.querySelector('.panel-component')
 );
 

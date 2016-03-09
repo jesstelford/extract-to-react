@@ -11,7 +11,8 @@ let Panel = React.createClass({
       url: React.PropTypes.string,
       html: React.PropTypes.string,
       css: React.PropTypes.string
-    })
+    }),
+    isLoading: React.PropTypes.bool
   },
 
   getDefaultProps() {
@@ -27,7 +28,10 @@ let Panel = React.createClass({
   render() {
     return (
       <div>
-        <Extractor inspected={this.props.inspected} />
+        <Extractor
+          inspected={this.props.inspected}
+          isLoading={this.props.isLoading}
+        />
         <Usage />
         <AdvancedUsage />
         <hr />
