@@ -1,7 +1,6 @@
 import Panel from './components/panel';
 
-var he = require('he'),
-    ga = require('./analytics'),
+var ga = require('./analytics'),
     React = require('react'),
     ReactDOM = require('react-dom'),
     throttle = require('lodash/throttle'),
@@ -25,7 +24,11 @@ window.handleInspected = _ => {
 
   startTime = performance.now();
 
+  console.log('about to makeSnapshot');
+
   makeSnapshot(function(error, output) {
+
+    console.log('makeSnapshot callback');
 
     var processingTime = Math.round(performance.now() - startTime);
 
@@ -43,7 +46,7 @@ window.handleInspected = _ => {
       chrome.runtime.sendMessage({type: 'error', message: errorMessage});
 
       ReactDOM.render(
-        <Panel inspected={{html: '', css: '', js: ''}} />,
+        <Panel inspected={{html: 'ERROR', css: '', js: ''}} />,
         document.querySelector('.panel-component')
       );
 

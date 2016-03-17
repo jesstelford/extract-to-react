@@ -1,12 +1,14 @@
 import React from 'react';
 import Usage from './usage';
 import Footer from './footer';
+import ElementList from './element-list';
 import AdvancedUsage from './advanced-usage';
 import prettyPrintHtml from '../tools/pretty-print-html';
+import {nodeToDataTree, nodesToDataTree} from '../tools/nodes-to-data-tree';
+import htmlStringToNodesArray from '../tools/html-string-to-nodes';
 
 var ga = require('../analytics'),
     packageJson = require('../../../package.json'),
-    makeSnapshot = require('../tools/make-snapshot'),
     convertToReact = require('../tools/convert-to-react');
 
 const bugUrl = packageJson.bugs.url + '/new';
@@ -121,7 +123,6 @@ function generateBugButton(url) {
   return '<button type="button" onclick="window.open(\'' + url.replace(/'/g, "\\'") + '\', \'_blank\')" style="position:absolute; right: 20px; bottom: 20px;">Not working?</button>';
 }
 
-
 let Extractor = React.createClass({
 
   propTypes: {
@@ -146,11 +147,7 @@ let Extractor = React.createClass({
   },
 
   componentWillReceiveProps(newProps) {
-    if (
-      newProps.inspected.url !== this.props.inspected.url
-      || newProps.inspected.html !== this.props.inspected.html
-      || newProps.inspected.css !== this.props.inspected.css
-    ) {
+    if (newProps.inspected.html !== this.props.inspected.html) {
       this.setState({
         hasInspected: !!newProps.inspected.html,
         prettyInspected: this.prepareForRender(newProps.inspected.html)
@@ -183,9 +180,12 @@ let Extractor = React.createClass({
   render() {
 
     let inspectedContent = this.state.prettyInspected,
-        buttonProps = {};
+        buttonProps = {},
+        data = [];
 
-    if (!this.state.hasInspected) {
+    if (this.state.hasInspected) {
+      data = nodesToDataTree(htmlStringToNodesArray(this.props.inspected.html));
+    } else {
       buttonProps.disabled = true;
       if (this.props.isLoading) {
         inspectedContent = <i>Loading...</i>;
@@ -204,6 +204,7 @@ let Extractor = React.createClass({
         </pre>
         <p>Generate and upload to...</p>
         <button {...buttonProps} onClick={this.handleCodepen}>Codepen</button>
+        <ElementList data={data} expandIconClass='tree-expand-icon' collapseIconClass='tree-collapse-icon'/>
       </div>
     );
   }

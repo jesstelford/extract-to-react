@@ -5,3 +5,25 @@
 .hidden {
   display: none;
 }
+
+.tree-view-node-children {
+  margin-left: 1em;
+}
+
+.tree-view-node-collapse-toggle {
+  display: block;
+  position: relative;
+  top: 1em;
+}
+
+.tree-collapse-icon::before {
+  content: ">";
+  display: block;
+  transform-origin: 0 0;
+  transform: rotateZ(90deg);
+}
+
+.tree-expand-icon::before {
+  content: ">";
+  display: block;
+}
