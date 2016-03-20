@@ -1,19 +1,10 @@
-import camelcase from 'camelcase';
-
-function cleanName(name) {
-  if (!name || Object.prototype.toString.call(name) !== '[object String]') {
-    return '';
-  }
-  return toAlpha(camelcase(name));
-}
-
-function toAlpha(name) {
-  return name.replace(/[^A-Za-z]/g, '');
-}
+import reactComponentName from './react-component-name';
 
 function uniquifyName(name, existingNames) {
 
-  if (existingNames[name]) {
+  console.log('uniquifying name', name, existingNames);
+
+  if (typeof existingNames[name] !== 'undefined') {
     existingNames[name]++;
     return `${name}${existingNames[name]}`;
   } else {
@@ -44,10 +35,19 @@ export function nodeToDataTree(node, existingNames = {}) {
 
   let result = {};
   let children;
-  let componentDataAttribute = (node.dataset && cleanName(node.dataset.component));
-  let name = componentDataAttribute
-    || cleanName(node.id)
-    || cleanName(node.tagName);
+  let componentDataAttribute = (node.dataset && reactComponentName(node.dataset.component));
+
+  let name;
+
+  if (node.dataset) {
+    name = componentDataAttribute
+      // Try to get the original id out of the HTML first
+      || reactComponentName(node.dataset.snapshooterOriginalId);
+  }
+
+  name = name
+    // all else failed, use the tag name
+    || reactComponentName(node.tagName.toLowerCase());
 
   name = uniquifyName(name, existingNames);
 
@@ -61,7 +61,7 @@ export function nodeToDataTree(node, existingNames = {}) {
     collapsible: true
   };
 
-  children = nodesToDataTree(Array.prototype.slice.call(node.children));
+  children = nodesToDataTree(Array.prototype.slice.call(node.children), existingNames);
 
   if (children.length) {
     result.children = children;

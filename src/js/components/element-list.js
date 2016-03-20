@@ -2,6 +2,7 @@ import omit from 'lodash/omit';
 import React from 'react';
 import {TreeMenu} from 'react-tree-menu';
 import ElementItem from './element-item';
+import reactComponentName from '../tools/react-component-name';
 
 //[
 //  {
@@ -92,6 +93,8 @@ let ElementList = React.createClass({
           checked={checked}
           onNameChange={value => {
             let element = findElement(this.state.data, lineage);
+            // Clean up the name to be a valid React Component Name
+            value = reactComponentName(value);
             element.label.name = value
             this.setState({data: this.state.data});
           }}

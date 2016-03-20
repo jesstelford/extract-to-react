@@ -28,12 +28,12 @@
   "homepage": "",
   "dependencies": {
     "babelify": "^7.2.0",
-    "camelcase": "^2.1.1",
     "html-to-react-components": "^1.4.0",
     "lodash": "^4.6.1",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
-    "react-tree-menu": "^1.5.0"
+    "react-tree-menu": "^1.5.0",
+    "titlecase": "^1.1.2"
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.3.13",

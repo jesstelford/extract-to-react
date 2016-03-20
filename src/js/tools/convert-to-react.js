@@ -15,6 +15,9 @@ module.exports = function convertToReact({html, css}, innerHTML = '', defaultCom
 
   html = setAttributeToRoot(html, 'data-component', defaultComponentName);
 
+  // TODO: FIXME: strip `data-snapshooter-original-id` attributes, and modify
+  // `id`'s to match component names
+
   var components = extractReactComponents(html, {
         componentType: 'es5',
         moduleType: false
