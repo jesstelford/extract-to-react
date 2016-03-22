@@ -5,9 +5,7 @@ var ga = require('./analytics'),
     ReactDOM = require('react-dom'),
     throttle = require('lodash/throttle'),
     makeSnapshot = require('./tools/make-snapshot'),
-    convertToReact = require('./tools/convert-to-react'),
-    elementBottomVisible = require('./tools/element-bottom-visible'),
-    htmlStringToNodesArray = require('./tools/html-string-to-nodes');
+    elementBottomVisible = require('./tools/element-bottom-visible');
 
 ReactDOM.render(
   <Panel isLoading={true} />,

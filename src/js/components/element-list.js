@@ -2,6 +2,7 @@ import omit from 'lodash/omit';
 import React from 'react';
 import {TreeMenu} from 'react-tree-menu';
 import ElementItem from './element-item';
+import lineageSearch from '../tools/lineage-search';
 import reactComponentName from '../tools/react-component-name';
 
 //[
@@ -28,39 +29,34 @@ import reactComponentName from '../tools/react-component-name';
 //
 //lineage=[1, 1];
 
-function findElement(collection, lineage) {
-  let element = null;
-  lineage.forEach(index => {
-    if (Object.prototype.toString.call(collection) === '[object Array]') {
-      element = collection[index];
-      collection = element.children;
-    }
-  });
-  return element;
+
+function getElementCopy(collection, lineage) {
+
+  let element = lineageSearch(collection, lineage);
+
+  if (element) {
+    let result = Object.assign({}, element);
+    result.label = Object.assign({}, element.label);
+    return result;
+  } else {
+    return element;
+  }
 }
 
 // HOC changing labels to inputs and adding change handlers
 let ElementList = React.createClass({
 
   propTypes: {
-    data: React.PropTypes.arrayOf(React.PropTypes.object).isRequired
+    data: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
+    onDataChange: React.PropTypes.func
   },
 
   getDefaultProps() {
     return {
       onCollapseChange: _=>{},
-      onCheckChange: _=>{}
+      onCheckChange: _=>{},
+      onDataChange: _=>{}
     }
-  },
-
-  getInitialState() {
-    return {
-      data: this.props.data
-    }
-  },
-
-  componentWillReceiveProps({data}) {
-    this.setState({data});
   },
 
   render() {
@@ -92,27 +88,27 @@ let ElementList = React.createClass({
           name={name}
           checked={checked}
           onNameChange={value => {
-            let element = findElement(this.state.data, lineage);
+            let element = getElementCopy(this.props.data, lineage);
             // Clean up the name to be a valid React Component Name
             value = reactComponentName(value);
             element.label.name = value
-            this.setState({data: this.state.data});
+            this.props.onDataChange(lineage, element);
           }}
           onCheckChange={checked => {
-            let element = findElement(this.state.data, lineage);
+            let element = getElementCopy(this.props.data, lineage);
             element.label.checked = checked;
-            this.setState({data: this.state.data});
+            this.props.onDataChange(lineage, element);
           }}
         />
       );
     };
 
     props.onTreeNodeCollapseChange = lineage => {
-      let element = findElement(this.state.data, lineage);
+      let element = getElementCopy(this.props.data, lineage);
       // toggle the checked state
       element.collapsed = !element.collapsed;
-      this.setState({data: this.state.data});
       onCollapseChange(element.collapsed, lineage);
+      this.props.onDataChange(lineage, element);
     };
 
     props.checkboxFactory = _ => false;

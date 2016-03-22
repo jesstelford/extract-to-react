@@ -2,6 +2,7 @@ import React from 'react';
 import Usage from './usage';
 import Footer from './footer';
 import ElementList from './element-list';
+import lineageSearch from '../tools/lineage-search';
 import AdvancedUsage from './advanced-usage';
 import prettyPrintHtml from '../tools/pretty-print-html';
 import {nodeToDataTree, nodesToDataTree} from '../tools/nodes-to-data-tree';
@@ -139,19 +140,22 @@ let Extractor = React.createClass({
     return prettyPrintHtml(html).join('<br />');
   },
 
-  getInitialState() {
+  setStateFromProps({inspected: {html}}) {
+    let hasInspected = !!html;
     return {
-      hasInspected: !!this.props.inspected.html,
-      prettyInspected: this.prepareForRender(this.props.inspected.html)
+      hasInspected,
+      prettyInspected: this.prepareForRender(html),
+      data: hasInspected ? nodesToDataTree(htmlStringToNodesArray(html)) : []
     }
+  },
+
+  getInitialState() {
+    return this.setStateFromProps(this.props);
   },
 
   componentWillReceiveProps(newProps) {
     if (newProps.inspected.html !== this.props.inspected.html) {
-      this.setState({
-        hasInspected: !!newProps.inspected.html,
-        prettyInspected: this.prepareForRender(newProps.inspected.html)
-      });
+      this.setState(this.setStateFromProps(newProps));
     }
   },
 
@@ -177,15 +181,28 @@ let Extractor = React.createClass({
 
   },
 
+  handleDataChange(lineage, element) {
+
+    let indexToUpdate = lineage.pop();
+    let collection = this.state.data;
+
+    // if it's not a top level item
+    if (lineage.length > 0) {
+      collection = lineageSearch(collection, lineage).children;
+    }
+
+    collection[indexToUpdate] = element;
+
+    this.setState({data: this.state.data});
+
+  },
+
   render() {
 
     let inspectedContent = this.state.prettyInspected,
-        buttonProps = {},
-        data = [];
+        buttonProps = {};
 
     if (this.state.hasInspected) {
-      data = nodesToDataTree(htmlStringToNodesArray(this.props.inspected.html));
-    } else {
       buttonProps.disabled = true;
       if (this.props.isLoading) {
         inspectedContent = <i>Loading...</i>;
@@ -204,7 +221,12 @@ let Extractor = React.createClass({
         </pre>
         <p>Generate and upload to...</p>
         <button {...buttonProps} onClick={this.handleCodepen}>Codepen</button>
-        <ElementList data={data} expandIconClass='tree-expand-icon' collapseIconClass='tree-collapse-icon'/>
+        <ElementList
+          data={this.state.data}
+          onDataChange={this.handleDataChange}
+          expandIconClass='tree-expand-icon'
+          collapseIconClass='tree-collapse-icon'
+        />
       </div>
     );
   }
