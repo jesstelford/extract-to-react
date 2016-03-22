@@ -26,15 +26,28 @@ export function nodesToDataTree(nodes, existingNames = {}) {
     nodes = [nodes];
   }
 
-  return nodes.map(node => nodeToDataTree(node, existingNames));
+  return buildTree(nodes, existingNames).tree;
 
-  // TODO: Walk the tree to collapse those without a child that is selected
+}
+
+function buildTree(nodes, existingNames = {}) {
+
+  let descendantChecked = false;
+
+  return {
+    tree: nodes.map(node => {
+      let dataTree = nodeToDataTree(node, existingNames);
+      descendantChecked = descendantChecked || dataTree.label.checked || !dataTree.collapsed;
+      return dataTree;
+    }),
+    descendantChecked
+  };
+
 }
 
 export function nodeToDataTree(node, existingNames = {}) {
 
   let result = {};
-  let children;
   let componentDataAttribute = (node.dataset && reactComponentName(node.dataset.component));
 
   let name;
@@ -51,20 +64,20 @@ export function nodeToDataTree(node, existingNames = {}) {
 
   name = uniquifyName(name, existingNames);
 
+  let {tree, descendantChecked} = buildTree(Array.prototype.slice.call(node.children), existingNames);
+
   result = {
     label: {
       name,
       checked: !!componentDataAttribute,
     },
     checkbox: false, // We'll handle this ourselves
-    collapsed: false,
+    collapsed: !descendantChecked,
     collapsible: true
   };
 
-  children = nodesToDataTree(Array.prototype.slice.call(node.children), existingNames);
-
-  if (children.length) {
-    result.children = children;
+  if (tree.length) {
+    result.children = tree;
   }
 
   return result;
