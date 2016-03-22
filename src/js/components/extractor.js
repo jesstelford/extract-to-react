@@ -4,7 +4,6 @@ import Footer from './footer';
 import ElementList from './element-list';
 import lineageSearch from '../tools/lineage-search';
 import AdvancedUsage from './advanced-usage';
-import prettyPrintHtml from '../tools/pretty-print-html';
 import {nodeToDataTree, nodesToDataTree} from '../tools/nodes-to-data-tree';
 import htmlStringToNodesArray from '../tools/html-string-to-nodes';
 
@@ -135,16 +134,10 @@ let Extractor = React.createClass({
     isLoading: React.PropTypes.bool
   },
 
-  prepareForRender(html) {
-    // TODO: html-entities the html, then return an array of elements to render
-    return prettyPrintHtml(html).join('<br />');
-  },
-
   setStateFromProps({inspected: {html}}) {
     let hasInspected = !!html;
     return {
       hasInspected,
-      prettyInspected: this.prepareForRender(html),
       data: hasInspected ? nodesToDataTree(htmlStringToNodesArray(html)) : []
     }
   },
@@ -199,34 +192,33 @@ let Extractor = React.createClass({
 
   render() {
 
-    let inspectedContent = this.state.prettyInspected,
+    let inspectedContent,
         buttonProps = {};
 
-    if (this.state.hasInspected) {
+    if (!this.state.hasInspected) {
       buttonProps.disabled = true;
+      inspectedContent = <i>None</i>;
+    } else {
       if (this.props.isLoading) {
         inspectedContent = <i>Loading...</i>;
       } else {
-        inspectedContent = <i>none</i>;
+        inspectedContent = (
+          <ElementList
+            data={this.state.data}
+            onDataChange={this.handleDataChange}
+            expandIconClass='tree-expand-icon'
+            collapseIconClass='tree-collapse-icon'
+          />
+        );
       }
     }
 
     return (
       <div>
         <p>Inspected Element:</p>
-        <pre>
-          <code>
-            {inspectedContent}
-          </code>
-        </pre>
+        {inspectedContent}
         <p>Generate and upload to...</p>
         <button {...buttonProps} onClick={this.handleCodepen}>Codepen</button>
-        <ElementList
-          data={this.state.data}
-          onDataChange={this.handleDataChange}
-          expandIconClass='tree-expand-icon'
-          collapseIconClass='tree-collapse-icon'
-        />
       </div>
     );
   }
