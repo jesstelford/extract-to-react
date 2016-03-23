@@ -13,21 +13,32 @@ export default React.createClass({
   getInitialState() {
     return {
       name: this.props.name,
-      checked: this.props.checked
+      checked: this.props.checked,
+      autoFocus: false
     };
   },
 
   componentWillReceiveProps(newProps) {
-    this.setState({
+
+    let state = {
       name: newProps.name,
       checked: newProps.checked
-    });
+    };
+
+    if (newProps.checked && !this.props.checked) {
+      state.autoFocus = true;
+    }
+
+    this.setState(state);
   },
 
-  handleCheckboxChange(event) {
-    let checked = !!event.target.checked;
+  setChecked(checked) {
     this.setState({checked});
     this.props.onCheckChange(checked);
+  },
+
+  handleDisabledInputClick() {
+    this.setChecked(true);
   },
 
   handleCheckboxChange(event) {
@@ -41,6 +52,22 @@ export default React.createClass({
   },
 
   render() {
+    let extraInputProps = {}
+
+    if (!this.state.checked) {
+      extraInputProps.onClick = this.handleDisabledInputClick;
+    }
+
+    if (this.state.autoFocus) {
+      extraInputProps.ref = input => {
+        if (input) {
+          input.select();
+          input.focus();
+          this.setState({autoFocus: false});
+        }
+      }
+    }
+
     return (
       <div className={this.props.className}>
         <input
@@ -53,6 +80,7 @@ export default React.createClass({
           value={this.state.name}
           disabled={!this.state.checked}
           onChange={this.handleNameChange}
+          {...extraInputProps}
         />
       </div>
     );
