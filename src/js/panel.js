@@ -1,14 +1,11 @@
 import Panel from './components/panel';
 
-var he = require('he'),
-    ga = require('./analytics'),
+var ga = require('./analytics'),
     React = require('react'),
     ReactDOM = require('react-dom'),
     throttle = require('lodash/throttle'),
     makeSnapshot = require('./tools/make-snapshot'),
-    convertToReact = require('./tools/convert-to-react'),
-    elementBottomVisible = require('./tools/element-bottom-visible'),
-    htmlStringToNodesArray = require('./tools/html-string-to-nodes');
+    elementBottomVisible = require('./tools/element-bottom-visible');
 
 ReactDOM.render(
   <Panel isLoading={true} />,
@@ -43,7 +40,7 @@ window.handleInspected = _ => {
       chrome.runtime.sendMessage({type: 'error', message: errorMessage});
 
       ReactDOM.render(
-        <Panel inspected={{html: '', css: '', js: ''}} />,
+        <Panel inspected={{html: 'ERROR', css: '', js: ''}} />,
         document.querySelector('.panel-component')
       );
 
@@ -74,7 +71,6 @@ window.handleInspected = _ => {
       }
     );
 
-    console.log(output);
     ReactDOM.render(
       <Panel inspected={output} />,
       document.querySelector('.panel-component')

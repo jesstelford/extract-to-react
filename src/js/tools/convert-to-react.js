@@ -11,9 +11,12 @@ function setAttributeToRoot(html, attribute, value) {
   return htmlNode.outerHTML;
 }
 
-module.exports = function convertToReact({html, css}, innerHTML = '', defaultComponentName = DEFAULT_COMPONENT_NAME) {
+module.exports = function convertToReact(html, innerHTML = '', defaultComponentName = DEFAULT_COMPONENT_NAME) {
 
   html = setAttributeToRoot(html, 'data-component', defaultComponentName);
+
+  // TODO: FIXME: strip `data-snapshooter-original-id` attributes, and modify
+  // `id`'s to match component names
 
   var components = extractReactComponents(html, {
         componentType: 'es5',
@@ -30,8 +33,7 @@ document.getElementById('container')
 
   return {
     html: `<div id="container">${innerHTML}</div>`,
-    js,
-    css
+    js
   };
 
 }

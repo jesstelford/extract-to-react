@@ -152,6 +152,8 @@ module.exports = function Snapshooter(root) {
       attr = attributes[i];
 
       if (attr.name.toLowerCase() === 'id') {
+        // store the original id in the HTML
+        result += ' data-snapshooter-original-id="' + attr.value + '"';
         value = createID(element);
         idSeen = true;
       } else {
@@ -250,10 +252,12 @@ module.exports = function Snapshooter(root) {
     descendants = clone.getElementsByTagName('*');
     idCounter = 1;
 
+    clone.setAttribute('data-snapshooter-original-id', clone.id);
     clone.setAttribute('id', createID(clone));
 
     for (i = 0, l = descendants.length; i < l; i++) {
       descendant = descendants[i];
+      descendant.setAttribute('data-snapshooter-original-id', descendant.id);
       descendant.setAttribute('id', createID(descendant));
       relativeURLsToAbsoluteURLs(descendant);
     }
