@@ -30,6 +30,10 @@ export default React.createClass({
     this.props.onCheckChange(checked);
   },
 
+  handleCheckboxChange(event) {
+    this.setChecked(!!event.target.checked);
+  },
+
   handleNameChange(event) {
     let name = event.target.value;
     this.setState({name});

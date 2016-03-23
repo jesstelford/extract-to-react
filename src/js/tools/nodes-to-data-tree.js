@@ -67,6 +67,7 @@ export function nodeToDataTree(node, existingNames = {}) {
   let {tree, descendantChecked} = buildTree(Array.prototype.slice.call(node.children), existingNames);
 
   result = {
+    node,
     label: {
       name,
       checked: !!componentDataAttribute,

@@ -4,6 +4,7 @@ import Footer from './footer';
 import ElementList from './element-list';
 import lineageSearch from '../tools/lineage-search';
 import AdvancedUsage from './advanced-usage';
+import nodesToHtmlString from '../tools/nodes-to-html-string';
 import {nodeToDataTree, nodesToDataTree} from '../tools/nodes-to-data-tree';
 import htmlStringToNodesArray from '../tools/html-string-to-nodes';
 
@@ -21,7 +22,7 @@ const errorTitle = encodeURIComponent('Error after extracting');
  * @param buildPostData A function to construct POST data for submitting a
  * form
  */
-function linkTrigger(inspected, name, loadingText, buildPostData) {
+function linkTrigger(inspected, nodes, name, loadingText, buildPostData) {
 
   var startTime,
       processingTime,
@@ -48,7 +49,8 @@ function linkTrigger(inspected, name, loadingText, buildPostData) {
 
   startTime = performance.now();
 
-  inspected = convertToReact(inspected, loadingText);
+  let inspectedAsReact = convertToReact(nodesToHtmlString(nodes), loadingText);
+  inspectedAsReact.css = originalCss;
 
   processingTime = Math.round(performance.now() - startTime);
 
@@ -65,10 +67,10 @@ function linkTrigger(inspected, name, loadingText, buildPostData) {
 
   errorBody = encodeURIComponent(buildErrorReport(originalHtml, originalCss, originalUrl));
 
-  inspected.html = inspected.html + '\n\n' + generateBugButton(bugUrl + '?title=' + errorTitle + '&body=' + errorBody);
+  inspectedAsReact.html = inspectedAsReact.html + '\n\n' + generateBugButton(bugUrl + '?title=' + errorTitle + '&body=' + errorBody);
 
   chrome.runtime.sendMessage({
-    post: buildPostData(inspected)
+    post: buildPostData(inspectedAsReact)
   });
 
 }
@@ -136,9 +138,11 @@ let Extractor = React.createClass({
 
   setStateFromProps({inspected: {html}}) {
     let hasInspected = !!html;
+    let nodes = htmlStringToNodesArray(html);
     return {
+      nodes,
       hasInspected,
-      data: hasInspected ? nodesToDataTree(htmlStringToNodesArray(html)) : []
+      data: hasInspected ? nodesToDataTree(nodes) : []
     }
   },
 
@@ -156,7 +160,7 @@ let Extractor = React.createClass({
     event.stopPropagation();
     event.preventDefault();
 
-    linkTrigger(this.props.inspected, 'codepen', function(output) {
+    linkTrigger(this.props.inspected, this.state.nodes, 'codepen', function(output) {
 
       return {
         url: 'http://codepen.io/pen/define',
@@ -185,6 +189,8 @@ let Extractor = React.createClass({
     }
 
     collection[indexToUpdate] = element;
+
+    collection[indexToUpdate].node.setAttribute('data-component', element.label.name);
 
     this.setState({data: this.state.data});
 

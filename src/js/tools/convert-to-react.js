@@ -11,7 +11,7 @@ function setAttributeToRoot(html, attribute, value) {
   return htmlNode.outerHTML;
 }
 
-module.exports = function convertToReact({html, css}, innerHTML = '', defaultComponentName = DEFAULT_COMPONENT_NAME) {
+module.exports = function convertToReact(html, innerHTML = '', defaultComponentName = DEFAULT_COMPONENT_NAME) {
 
   html = setAttributeToRoot(html, 'data-component', defaultComponentName);
 
@@ -33,8 +33,7 @@ document.getElementById('container')
 
   return {
     html: `<div id="container">${innerHTML}</div>`,
-    js,
-    css
+    js
   };
 
 }
