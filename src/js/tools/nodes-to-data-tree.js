@@ -2,8 +2,6 @@ import reactComponentName from './react-component-name';
 
 function uniquifyName(name, existingNames) {
 
-  console.log('uniquifying name', name, existingNames);
-
   if (typeof existingNames[name] !== 'undefined') {
     existingNames[name]++;
     return `${name}${existingNames[name]}`;

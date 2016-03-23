@@ -22,11 +22,7 @@ window.handleInspected = _ => {
 
   startTime = performance.now();
 
-  console.log('about to makeSnapshot');
-
   makeSnapshot(function(error, output) {
-
-    console.log('makeSnapshot callback');
 
     var processingTime = Math.round(performance.now() - startTime);
 
@@ -75,7 +71,6 @@ window.handleInspected = _ => {
       }
     );
 
-    console.log(output);
     ReactDOM.render(
       <Panel inspected={output} />,
       document.querySelector('.panel-component')
