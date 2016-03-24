@@ -1,6 +1,8 @@
 import React from 'react';
 import Usage from './usage';
 import Footer from './footer';
+import cleanNode from '../tools/clean-node';
+import nodeWalker from '../tools/node-walker';
 import ElementList from './element-list';
 import lineageSearch from '../tools/lineage-search';
 import AdvancedUsage from './advanced-usage';
@@ -49,7 +51,31 @@ function linkTrigger(inspected, nodes, name, loadingText, buildPostData) {
 
   startTime = performance.now();
 
-  let inspectedAsReact = convertToReact(nodesToHtmlString(nodes), loadingText);
+  // TODO: Make CSS ID's match component names
+  let walker = nodeWalker([cleanNode]);
+
+  // NOTE: We clone the nodes here to avoid accidentally modifying our originals
+  let walkedNodes = htmlStringToNodesArray(nodesToHtmlString(nodes));
+
+  walker(walkedNodes);
+
+  processingTime = Math.round(performance.now() - startTime);
+
+  ga(
+    'send',
+    'timing',
+    {
+      'timingCategory': 'processing',
+      'timingVar': 'node-walking-complete',
+      'timingValue': processingTime,
+      'timingLabel': 'Node Walking Complete'
+    }
+  );
+
+
+  startTime = performance.now();
+
+  let inspectedAsReact = convertToReact(nodesToHtmlString(walkedNodes), loadingText);
   inspectedAsReact.css = originalCss;
 
   processingTime = Math.round(performance.now() - startTime);
@@ -121,7 +147,6 @@ ${css}
 }
 
 function generateBugButton(url) {
-  // TODO: global regex to replace ' with \' in the url string
   return '<button type="button" onclick="window.open(\'' + url.replace(/'/g, "\\'") + '\', \'_blank\')" style="position:absolute; right: 20px; bottom: 20px;">Not working?</button>';
 }
 
