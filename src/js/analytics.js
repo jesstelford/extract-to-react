@@ -8,7 +8,7 @@ var whereAmI = window || global,
       'No Inspected Element': 'dimension1'
     };
 
-if (process.env.NODE_ENV === 'production') {
+if (false /*process.env.NODE_ENV === 'production'*/) {
 
   // GA tag which will retry loading until successful with initial expoential
   // backoff, up to 30 seconds where it'll retry every 30 seconds.
